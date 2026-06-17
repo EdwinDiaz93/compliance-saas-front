@@ -1,1 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
+@import url('https://googleapis.com');
+@import "tailwindcss";
+
+@theme {
+  --font-roboto: "Roboto", sans-serif;  
+}
+
+.linear-ic{
+  @apply bg-linear-to-r  from-zinc-900 to-teal-800;
+}
+
+.to-link{
+  @apply to-teal-800;
+}

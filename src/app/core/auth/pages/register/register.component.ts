@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register.component',
@@ -7,5 +8,9 @@ import { Component } from '@angular/core';
   styleUrl: './register.component.css',
 })
 export class RegisterComponent {
+  private readonly router = inject(Router);
 
+  gotoLogin() {
+    this.router.navigateByUrl('/auth/login')
+  }
 }
