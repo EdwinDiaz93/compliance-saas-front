@@ -16,6 +16,11 @@ export class UtilsService {
           message = `The ${key} field  is required`
           break
 
+        case 'pattern':
+          console.log(error)
+          message = `The ${key} is invalid`
+          break
+
         default:
           break;
       }
@@ -24,7 +29,7 @@ export class UtilsService {
     return message;
   }
   isValidField(form: FormGroup, key: string) {
-    return form.get(key)?.invalid || form.get(key)?.touched;
+    return form.get(key)?.invalid && form.get(key)?.touched;
   }
-  public static readonly passwordRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;
+  public static readonly emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;
 }

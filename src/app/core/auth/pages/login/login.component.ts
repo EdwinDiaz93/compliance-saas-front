@@ -21,7 +21,7 @@ export class LoginComponent {
 
   public loginForm = this.formBuilder.group({
     tenant: ['', [Validators.required]],
-    email: ['', [Validators.required, Validators.pattern(UtilsService.passwordRegex)]]
+    email: ['', [Validators.required, Validators.pattern(UtilsService.emailRegex)]]
   });
 
   login() {
