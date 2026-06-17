@@ -10,6 +10,7 @@ import { MatStepperModule } from '@angular/material/stepper';
 
 
 
+
 const modules = [  
   MatDialogModule,
   MatSnackBarModule,
@@ -18,7 +19,8 @@ const modules = [
   MatTableModule,
   MatSortModule,
   MatPaginatorModule,
-  MatStepperModule
+  MatStepperModule,
+
 ];
 
 
