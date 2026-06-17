@@ -1,0 +1,19 @@
+.sidebar {
+  width: 260px;
+}
+
+.sidebar--closed {
+  width: 68px;
+}
+
+@media (max-width: 1023px) {
+  .sidebar--closed {
+    width: 0;
+    padding: 0;
+  }
+}
+
+.nav-item--active {
+  background-color: rgb(255 255 255 / 0.1);
+  color: white;
+}
