@@ -15,22 +15,18 @@
   <form autocomplete="off" class="flex flex-col gap-5">
 
     <div class="flex flex-col gap-1.5">
-      <label for="first_name" class="text-sm font-semibold text-slate-700">Organization</label>
+      <label for="first_name" class="text-sm font-semibold text-slate-700">First Name</label>
       <div class="flex items-center gap-3 border border-slate-300 rounded-xl px-4 py-3 focus-within:border-indigo-400 focus-within:ring-2 focus-within:ring-indigo-100 transition-all">
-        <svg class="w-5 h-5 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-          <path d="M16,4H2A2.006,2.006,0,0,0,0,6V24H18V6A2.006,2.006,0,0,0,16,4ZM8,22V18h2v4Zm8,0H12V17a.945.945,0,0,0-1-1H7a.945.945,0,0,0-1,1v5H2V6H16ZM8,10H6V8H8Zm4,0H10V8h2ZM8,14H6V12H8Zm4,0H10V12h2Z" transform="translate(3 -2)"/>
-        </svg>
-        <input type="text" id="first_name" class="w-full text-slate-700 placeholder-slate-400 outline-none bg-transparent text-sm" placeholder="John">
+        <svg class="w-5 h-5" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M8 7C9.65685 7 11 5.65685 11 4C11 2.34315 9.65685 1 8 1C6.34315 1 5 2.34315 5 4C5 5.65685 6.34315 7 8 7Z" fill="#90a1b9"></path> <path d="M14 12C14 10.3431 12.6569 9 11 9H5C3.34315 9 2 10.3431 2 12V15H14V12Z" fill="#90a1b9"></path> </g></svg>
+        <input type="text" id="first_name" class="base-input" placeholder="John">
       </div>
     </div>
 
     <div class="flex flex-col gap-1.5">
-      <label for="last_name" class="text-sm font-semibold text-slate-700">Organization</label>
+      <label for="last_name" class="text-sm font-semibold text-slate-700">Last Name</label>
       <div class="flex items-center gap-3 border border-slate-300 rounded-xl px-4 py-3 focus-within:border-indigo-400 focus-within:ring-2 focus-within:ring-indigo-100 transition-all">
-        <svg class="w-5 h-5 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-          <path d="M16,4H2A2.006,2.006,0,0,0,0,6V24H18V6A2.006,2.006,0,0,0,16,4ZM8,22V18h2v4Zm8,0H12V17a.945.945,0,0,0-1-1H7a.945.945,0,0,0-1,1v5H2V6H16ZM8,10H6V8H8Zm4,0H10V8h2ZM8,14H6V12H8Zm4,0H10V12h2Z" transform="translate(3 -2)"/>
-        </svg>
-        <input type="text" id="last_name" class="w-full text-slate-700 placeholder-slate-400 outline-none bg-transparent text-sm" placeholder="Doe">
+        <svg class="w-5 h-5" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M8 7C9.65685 7 11 5.65685 11 4C11 2.34315 9.65685 1 8 1C6.34315 1 5 2.34315 5 4C5 5.65685 6.34315 7 8 7Z" fill="#90a1b9"></path> <path d="M14 12C14 10.3431 12.6569 9 11 9H5C3.34315 9 2 10.3431 2 12V15H14V12Z" fill="#90a1b9"></path> </g></svg>
+        <input type="text" id="last_name" class="base-input" placeholder="Doe">
       </div>
     </div>
 
@@ -40,7 +36,7 @@
         <svg class="w-5 h-5 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
           <path d="M16,4H2A2.006,2.006,0,0,0,0,6V24H18V6A2.006,2.006,0,0,0,16,4ZM8,22V18h2v4Zm8,0H12V17a.945.945,0,0,0-1-1H7a.945.945,0,0,0-1,1v5H2V6H16ZM8,10H6V8H8Zm4,0H10V8h2ZM8,14H6V12H8Zm4,0H10V12h2Z" transform="translate(3 -2)"/>
         </svg>
-        <input type="text" id="tenant" class="w-full text-slate-700 placeholder-slate-400 outline-none bg-transparent text-sm" placeholder="Acme Corp">
+        <input type="text" id="tenant" class="base-input" placeholder="Acme Corp">
       </div>
     </div>
 
@@ -50,7 +46,7 @@
         <svg class="w-5 h-5 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
           <path d="M4 18L9 12M20 18L15 12M3 8L10.225 12.8166C10.8665 13.2443 11.1872 13.4582 11.5339 13.5412C11.8403 13.6147 12.1597 13.6147 12.4661 13.5412C12.8128 13.4582 13.1335 13.2443 13.775 12.8166L21 8M6.2 19H17.8C18.9201 19 19.4802 19 19.908 18.782C20.2843 18.5903 20.5903 18.2843 20.782 17.908C21 17.4802 21 16.9201 21 15.8V8.2C21 7.0799 21 6.51984 20.782 6.09202C20.5903 5.71569 20.2843 5.40973 19.908 5.21799C19.4802 5 18.9201 5 17.8 5H6.2C5.0799 5 4.51984 5 4.09202 5.21799C3.71569 5.40973 3.40973 5.71569 3.21799 6.09202C3 6.51984 3 7.07989 3 8.2V15.8C3 16.9201 3 17.4802 3.21799 17.908C3.40973 18.2843 3.71569 18.5903 4.09202 18.782C4.51984 19 5.07989 19 6.2 19Z"/>
         </svg>
-        <input type="email" id="email" class="w-full text-slate-700 placeholder-slate-400 outline-none bg-transparent text-sm" placeholder="you@example.com">
+        <input type="email" id="email" class="base-input" placeholder="you@example.com">
       </div>
     </div>
 
@@ -59,7 +55,7 @@
     </p>
 
     <button type="submit" class="linear-ic w-full py-3 rounded-xl text-white font-semibold text-sm tracking-wide cursor-pointer hover:opacity-90 transition-opacity mt-1">
-      Send magic link
+      Send Credentials
     </button>
 
   </form>
