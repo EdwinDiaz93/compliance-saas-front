@@ -17,7 +17,6 @@ export class UtilsService {
           break
 
         case 'pattern':
-          console.log(error)
           message = `The ${key} is invalid`
           break
 

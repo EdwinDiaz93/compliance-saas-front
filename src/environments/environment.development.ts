@@ -1,3 +1,4 @@
 export const environment = {
-    baseUrl: 'http://localhost:4200/api/v1'
+    baseUrl: 'http://localhost:4500/api/v1',
+    "appName": "ComplyyCert"
 };

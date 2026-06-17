@@ -1,0 +1,16 @@
+import { inject } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
+import { AuthService } from '@core/auth/services';
+
+// Bloquea el acceso al dashboard si el tenant está en TRIAL — redirige a la pantalla de pago
+export const tenantActiveGuard: CanActivateFn = () => {
+  const authService = inject(AuthService);
+  const router = inject(Router);
+
+  const payload = authService.getPayload();
+  if (!payload) return router.createUrlTree(['/auth/login']);
+
+  if (!payload.tenantStatus || payload.tenantStatus === 'ACTIVE') return true;
+
+  return router.createUrlTree(['/billing/checkout']);
+};

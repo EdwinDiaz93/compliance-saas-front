@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { authGuard, tenantActiveGuard } from '@core/guards';
 
 export const routes: Routes = [
 
@@ -12,8 +13,17 @@ export const routes: Routes = [
         loadChildren: () => import('@core/auth/auth.routes').then(m => m.authRoutes)
     },
     {
+        path: 'verification',
+        loadComponent: () => import('@core/auth/pages/verify/verify.component').then(m => m.VerifyComponent)
+    },
+    {
+        path: 'accept-invitation',
+        loadComponent: () => import('@core/auth/pages/accept-invitation/accept-invitation.component').then(m => m.AcceptInvitationComponent)
+    },
+    {
         path: '',
         loadComponent: () => import('@layout').then(c => c.DashboardLayoutComponent),
+        canActivate: [authGuard, tenantActiveGuard],
         children: [
             {
                 path: 'dashboard',
@@ -46,4 +56,8 @@ export const routes: Routes = [
         ]
     },
 
+    {
+        path: '**',
+        redirectTo: 'auth'
+    }
 ];
