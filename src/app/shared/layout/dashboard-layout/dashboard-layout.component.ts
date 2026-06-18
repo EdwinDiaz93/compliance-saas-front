@@ -7,6 +7,7 @@ interface NavItem {
   label: string;
   icon: string;
   route: string;
+  requiresActive?: boolean;
 }
 
 interface NavGroup {
@@ -24,6 +25,7 @@ export class DashboardLayoutComponent {
   private readonly authService = inject(AuthService);
   sidebarOpen = signal(true);
   protected readonly environment = environment;
+  protected readonly isTrial = this.authService.getPayload()?.tenantStatus === 'TRIAL';
   protected readonly userName = (() => {
     const p = this.authService.getPayload();
     return [p?.firstName, p?.lastName].filter(Boolean).join(' ');
@@ -39,16 +41,16 @@ export class DashboardLayoutComponent {
     {
       title: 'Management',
       items: [
-        { label: 'Users', icon: 'users', route: '/users' },
-        { label: 'Locations', icon: 'locations', route: '/locations' },
-        { label: 'Authorities', icon: 'authorities', route: '/authorities' },
+        { label: 'Users', icon: 'users', route: '/users', requiresActive: true },
+        { label: 'Locations', icon: 'locations', route: '/locations', requiresActive: true },
+        { label: 'Authorities', icon: 'authorities', route: '/authorities', requiresActive: true },
       ],
     },
     {
       title: 'Compliance',
       items: [
-        { label: 'Compliances', icon: 'compliances', route: '/compliances' },
-        { label: 'Reports', icon: 'reports', route: '/reports' },
+        { label: 'Compliances', icon: 'compliances', route: '/compliances', requiresActive: true },
+        { label: 'Reports', icon: 'reports', route: '/reports', requiresActive: true },
       ],
     },
   ];

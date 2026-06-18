@@ -15,8 +15,11 @@ export class AcceptInvitationComponent implements OnInit {
   status = signal<'loading' | 'error'>('loading');
 
   ngOnInit() {
-    const token = this.route.snapshot.queryParamMap.get('token');
-    if (!token) { this.status.set('error'); return; }
+    const raw = this.route.snapshot.queryParamMap.get('token');
+    if (!raw) { this.status.set('error'); return; }
+
+    // queryParamMap decodifica '+' como espacio — se restaura para tokens Base64 estándar
+    const token = raw.replace(/ /g, '+');
 
     this.authService.acceptInvitation(token).subscribe({
       next: () => this.router.navigateByUrl('/dashboard'),

@@ -9,8 +9,10 @@ export const tenantActiveGuard: CanActivateFn = () => {
 
   const payload = authService.getPayload();
   if (!payload) return router.createUrlTree(['/auth/login']);
-
+  console.log(payload);
+  
   if (!payload.tenantStatus || payload.tenantStatus === 'ACTIVE') return true;
 
-  return router.createUrlTree(['/billing/checkout']);
+  // TRIAL: redirige al dashboard donde el sidebar muestra las opciones bloqueadas
+  return router.createUrlTree(['/dashboard']);
 };

@@ -13,11 +13,11 @@ export class UtilsService {
     for (const error of errors) {
       switch (error) {
         case 'required':
-          message = `The ${key} field  is required`
+          message = `The ${this.transformReadableString(key)} field  is required`
           break
 
         case 'pattern':
-          message = `The ${key} is invalid`
+          message = `The ${this.transformReadableString(key)} is invalid`
           break
 
         default:
@@ -30,5 +30,12 @@ export class UtilsService {
   isValidField(form: FormGroup, key: string) {
     return form.get(key)?.invalid && form.get(key)?.touched;
   }
+
+  private transformReadableString(phrase: string) {
+    return phrase.split('_')
+      .map(word => word.charAt(0) + word.slice(1))
+      .join(' ');
+  }
+
   public static readonly emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;
 }

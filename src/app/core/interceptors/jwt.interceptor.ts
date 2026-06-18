@@ -36,6 +36,11 @@ export const jwtInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, nex
         return throwError(() => error);
       }
 
+      if (error.status === 429) {
+        notificationService.show('Too many requests. Please wait a moment and try again.', 'warning');
+        return throwError(() => error);
+      }
+
       if (error.status >= 500) {
         notificationService.show('Server error. Please try again later.', 'error');
         return throwError(() => error);

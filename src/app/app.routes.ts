@@ -23,7 +23,7 @@ export const routes: Routes = [
     {
         path: '',
         loadComponent: () => import('@layout').then(c => c.DashboardLayoutComponent),
-        canActivate: [authGuard, tenantActiveGuard],
+        canActivate: [authGuard],
         children: [
             {
                 path: 'dashboard',
@@ -31,22 +31,27 @@ export const routes: Routes = [
             },
             {
                 path: 'authorities',
+                canActivate: [tenantActiveGuard],
                 loadChildren: () => import('@features/authorities/authority.routes').then(m => m.authorityRoutes)
             },
             {
                 path: 'compliances',
+                canActivate: [tenantActiveGuard],
                 loadChildren: () => import('@features/compliances/compliance.routes').then(m => m.complianceRoutes)
             },
             {
                 path: 'locations',
+                canActivate: [tenantActiveGuard],
                 loadChildren: () => import('@features/locations/location.routes').then(m => m.locationRoutes)
             },
             {
                 path: 'users',
+                canActivate: [tenantActiveGuard],
                 loadChildren: () => import('@features/users/users.routes').then(m => m.usersRoutes)
             },
             {
                 path: 'reports',
+                canActivate: [tenantActiveGuard],
                 loadChildren: () => import('@features/reports/report.routes').then(m => m.reportRoutes)
             },
             {

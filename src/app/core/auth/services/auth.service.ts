@@ -11,7 +11,7 @@ interface AuthResponse {
   refresh_token: string;
 }
 
-export type TenantStatus = 'TRIAL' | 'ACTIVE';
+export type TenantStatus = 'TRIAL' | 'ACTIVE' | 'SUSPENDED';
 
 export interface JwtPayload {
   sub: string;
@@ -46,6 +46,7 @@ export class AuthService {
   }
 
   verifyAccount(token: string) {
+
     return this.http.post<AuthResponse>(`${environment.baseUrl}/auth/verification`, { token }).pipe(
       tap(({ access_token, refresh_token }) => this.saveTokens(access_token, refresh_token))
     );

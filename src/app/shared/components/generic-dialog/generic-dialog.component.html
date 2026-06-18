@@ -1,0 +1,28 @@
+<div class=" bg-white flex flex-col w-full">
+    <!-- TopBar -->
+    <div class="w-full flex flex-row h-10 justify-between">
+
+        <!-- Action buttons -->
+        <div class=" flex flex-row">
+            @if (firstButtonText.length>0) {
+            <button (click)="firstClick()" class="base-button  w-2/6">
+                {{firstButtonText}}
+            </button>
+            }
+
+            @if (secondButtonText.length>0) {
+            <button (click)="secondClick()" class="base-button  w-2/6">
+                {{secondButtonText}}
+            </button>
+            }
+
+            @if (thirdButtonText.length>0) {
+            <button (click)="thirdClick()" class="base-button  w-2/6">
+                {{thirdButtonText}}
+            </button>
+            }
+        </div>
+
+
+    </div>
+</div>

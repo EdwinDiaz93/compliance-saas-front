@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { SharedModule } from '@shared/shared-module';
 import { Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
+import { HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from '@core/auth/services';
 import { UtilsService } from '@shared/utils';
 import { environment } from 'environments';
@@ -25,7 +26,7 @@ export class LoginComponent {
   hasError = signal(false);
 
   loginForm = this.formBuilder.group({
-    tenant: ['', [Validators.required]],
+    organization: ['', [Validators.required]],
     email: ['', [Validators.required, Validators.pattern(UtilsService.emailRegex)]],
   });
 
@@ -36,9 +37,12 @@ export class LoginComponent {
     }
     this.hasError.set(false);
     this.isLoading.set(true);
-    this.authService.login(this.loginForm.getRawValue() as any).subscribe({
+    this.authService.login({
+      tenant: this.loginForm.get('organization')?.value!,
+      email: this.loginForm.get('email')?.value!
+    }).subscribe({
       next: () => this.emailSent.set(true),
-      error: () => { this.isLoading.set(false); this.hasError.set(true); },
+      error: (err: HttpErrorResponse) => { this.isLoading.set(false); if (err.status !== 429) this.hasError.set(true); },
       complete: () => this.isLoading.set(false),
     });
   }

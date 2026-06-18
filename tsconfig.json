@@ -28,7 +28,10 @@
       "@shared/*": [
         "src/app/shared/*"
       ],
-      "environments":[
+      "@dialogs": [
+        "src/app/shared/components/dialogs"
+      ],
+      "environments": [
         "src/environments/environment.ts",
         "src/environments/environment.development.ts"
       ]

@@ -37,59 +37,75 @@
           </p>
           <ul class="flex flex-col gap-1">
             @for (item of group.items; track item.route) {
+              @let locked = isTrial && !!item.requiresActive;
               <li>
-                <a [routerLink]="item.route" routerLinkActive="nav-item--active"
-                  class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-white/70 hover:text-white hover:bg-white/10 transition-all duration-150 cursor-pointer">
-                  <span class="shrink-0">
-                      @switch (item.icon) {
-                        @case ('dashboard') {
-                          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                            <rect x="3" y="3" width="7" height="7" rx="1.5"/>
-                            <rect x="14" y="3" width="7" height="7" rx="1.5"/>
-                            <rect x="3" y="14" width="7" height="7" rx="1.5"/>
-                            <rect x="14" y="14" width="7" height="7" rx="1.5"/>
-                          </svg>
-                        }
-                        @case ('users') {
-                          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                            <circle cx="9" cy="7" r="4"/>
-                            <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
-                          </svg>
-                        }
-                        @case ('locations') {
-                          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
-                            <circle cx="12" cy="9" r="2.5"/>
-                          </svg>
-                        }
-                        @case ('authorities') {
-                          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                          </svg>
-                        }
-                        @case ('compliances') {
-                          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                            <path d="M9 11l3 3L22 4"/>
-                            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
-                          </svg>
-                        }
-                        @case ('reports') {
-                          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                            <polyline points="14,2 14,8 20,8"/>
-                            <line x1="16" y1="13" x2="8" y2="13"/>
-                            <line x1="16" y1="17" x2="8" y2="17"/>
-                            <polyline points="10,9 9,9 8,9"/>
-                          </svg>
-                        }
-                      }
+                @if (locked) {
+                  <span class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-white/30 cursor-not-allowed opacity-50 select-none">
+                    <span class="shrink-0">
+                      <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <rect x="3" y="11" width="18" height="11" rx="2"/>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                      </svg>
+                    </span>
+                    <span class="text-sm font-medium whitespace-nowrap overflow-hidden transition-all duration-300"
+                      [class.w-0]="!sidebarOpen()" [class.opacity-0]="!sidebarOpen()">
+                      {{ item.label }}
+                    </span>
                   </span>
-                  <span class="text-sm font-medium whitespace-nowrap overflow-hidden transition-all duration-300"
-                    [class.w-0]="!sidebarOpen()" [class.opacity-0]="!sidebarOpen()">
-                    {{ item.label }}
-                  </span>
-                </a>
+                } @else {
+                  <a [routerLink]="item.route" routerLinkActive="nav-item--active"
+                    class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-white/70 hover:text-white hover:bg-white/10 transition-all duration-150 cursor-pointer">
+                    <span class="shrink-0">
+                        @switch (item.icon) {
+                          @case ('dashboard') {
+                            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                              <rect x="3" y="3" width="7" height="7" rx="1.5"/>
+                              <rect x="14" y="3" width="7" height="7" rx="1.5"/>
+                              <rect x="3" y="14" width="7" height="7" rx="1.5"/>
+                              <rect x="14" y="14" width="7" height="7" rx="1.5"/>
+                            </svg>
+                          }
+                          @case ('users') {
+                            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                              <circle cx="9" cy="7" r="4"/>
+                              <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+                            </svg>
+                          }
+                          @case ('locations') {
+                            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+                              <circle cx="12" cy="9" r="2.5"/>
+                            </svg>
+                          }
+                          @case ('authorities') {
+                            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                          }
+                          @case ('compliances') {
+                            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                              <path d="M9 11l3 3L22 4"/>
+                              <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                            </svg>
+                          }
+                          @case ('reports') {
+                            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                              <polyline points="14,2 14,8 20,8"/>
+                              <line x1="16" y1="13" x2="8" y2="13"/>
+                              <line x1="16" y1="17" x2="8" y2="17"/>
+                              <polyline points="10,9 9,9 8,9"/>
+                            </svg>
+                          }
+                        }
+                    </span>
+                    <span class="text-sm font-medium whitespace-nowrap overflow-hidden transition-all duration-300"
+                      [class.w-0]="!sidebarOpen()" [class.opacity-0]="!sidebarOpen()">
+                      {{ item.label }}
+                    </span>
+                  </a>
+                }
               </li>
             }
           </ul>
@@ -145,6 +161,18 @@
       </div>
 
       <div class="ml-auto flex items-center gap-2">
+
+        @if (isTrial) {
+          <div class="flex items-center gap-2 bg-amber-50 border border-amber-200 rounded-xl px-3 py-1.5">
+            <svg class="w-4 h-4 text-amber-500 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+              <line x1="12" y1="9" x2="12" y2="13"/>
+              <line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
+            <span class="text-amber-700 text-xs font-medium whitespace-nowrap">Trial plan — upgrade to unlock all features</span>
+          </div>
+        }
+
         <button class="p-2 rounded-lg text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition-all cursor-pointer">
           <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>

@@ -1,6 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
+import { HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from '@core/auth/services';
 import { UtilsService } from '@shared/utils';
 import { SharedModule } from '@shared/shared-module';
@@ -24,9 +25,9 @@ export class RegisterComponent {
   hasError = signal(false);
 
   registerForm = this.formBuilder.group({
-    firstName: ['', [Validators.required]],
-    lastName: ['', [Validators.required]],
-    companyName: ['', [Validators.required]],
+    first_name: ['', [Validators.required]],
+    last_name: ['', [Validators.required]],
+    organization: ['', [Validators.required]],
     email: ['', [Validators.required, Validators.pattern(UtilsService.emailRegex)]],
   });
 
@@ -36,9 +37,14 @@ export class RegisterComponent {
       return;
     }
     this.isLoading.set(true);
-    this.authService.register(this.registerForm.getRawValue() as any).subscribe({
+    this.authService.register({
+      firstName: this.registerForm.get('first_name')?.value!,
+      lastName: this.registerForm.get('last_name')?.value!,
+      companyName: this.registerForm.get('organization')?.value!,
+      email: this.registerForm.get('email')?.value!
+    }).subscribe({
       next: () => this.emailSent.set(true),
-      error: () => { this.isLoading.set(false); this.hasError.set(true); },
+      error: (err: HttpErrorResponse) => { this.isLoading.set(false); if (err.status !== 429) this.hasError.set(true); },
       complete: () => this.isLoading.set(false),
     });
   }
