@@ -88,6 +88,10 @@ export class LocationsComponent implements OnInit {
             text: `You are about to ${action} ${location.name}`,
             icon: 'question',
             showCancelButton: true,
+            customClass:{
+                confirmButton:'linear-ic',
+                cancelButton:'linear-rr'
+            },
             showConfirmButton: true,
             confirmButtonColor: UtilsService.confirmButtonColor,
             cancelButtonColor: UtilsService.cancelButtonColor,
@@ -120,6 +124,10 @@ export class LocationsComponent implements OnInit {
             text: `You are about to delete ${location.name}. Cannot delete if it has compliance items linked.`,
             icon: 'question',
             showCancelButton: true,
+            customClass:{
+                confirmButton:'linear-ic',
+                cancelButton:'linear-rr'
+            },
             showConfirmButton: true,
             confirmButtonColor: UtilsService.confirmButtonColor,
             cancelButtonColor: UtilsService.cancelButtonColor,

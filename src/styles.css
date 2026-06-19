@@ -7,7 +7,7 @@
 }
 
 .linear-ic{
-  @apply bg-linear-to-r  from-zinc-900 to-teal-800;
+  @apply bg-linear-to-r  from-zinc-900 to-blue-900;
 }
 .linear-rr{
   @apply bg-linear-to-tr from-red-400 to-red-600;

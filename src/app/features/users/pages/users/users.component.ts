@@ -208,6 +208,10 @@ export class UsersComponent implements OnInit {
       text: `You are about to delete the user ${user.firstName} ${user.lastName}`,
       icon: "question",
       showCancelButton: true,
+      customClass:{
+                confirmButton:'linear-ic',
+                cancelButton:'linear-rr'
+            },
       showConfirmButton: true,
       confirmButtonColor: UtilsService.confirmButtonColor,
       cancelButtonColor: UtilsService.cancelButtonColor
@@ -247,6 +251,10 @@ export class UsersComponent implements OnInit {
       text: `You are about to restore the user ${user.firstName} ${user.lastName}`,
       icon: "question",
       showCancelButton: true,
+      customClass:{
+                confirmButton:'linear-ic',
+                cancelButton:'linear-rr'
+            },
       showConfirmButton: true,
       confirmButtonColor: UtilsService.confirmButtonColor,
       cancelButtonColor: UtilsService.cancelButtonColor

@@ -105,6 +105,10 @@ export class AuthoritiesComponent implements OnInit {
             icon: 'question',
             showCancelButton: true,
             showConfirmButton: true,
+            customClass:{
+                confirmButton:'linear-ic',
+                cancelButton:'linear-rr'
+            },
             confirmButtonColor: UtilsService.confirmButtonColor,
             cancelButtonColor: UtilsService.cancelButtonColor,
         }).then((result) => {
