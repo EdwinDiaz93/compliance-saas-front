@@ -11,6 +11,7 @@ export class UserService {
 
 
 
+
   private readonly baseUrl = environment.baseUrl;
   private readonly httpClient = inject(HttpClient);
 
@@ -36,6 +37,10 @@ export class UserService {
       userIds
     }
     return this.httpClient.post(`${this.baseUrl}/users/invitations`, invitationsRequest);
+  }
+
+  restoreUser(userId: string) {
+    return this.httpClient.patch(`${this.baseUrl}/users/${userId}/restore`, {});
   }
 
   deleteUser(id: string) {

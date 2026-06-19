@@ -1,0 +1,70 @@
+<app-generic-dialog [title]="title" (onCancelClick)="onCancel()">
+    <form [formGroup]="locationForm" class="grid grid-cols-2 p-5 gap-10 mb-10" (ngSubmit)="saveLocation()">
+
+        <div class="flex flex-col gap-1.5">
+            <label for="name" class="text-sm font-semibold text-slate-700 ml-2">Location Name</label>
+            <div class="flex items-center gap-3 border border-slate-300 rounded-xl px-4 py-3 focus-within:border-indigo-400 focus-within:ring-2 focus-within:ring-indigo-100 transition-all">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="#90a19b"/>
+                </svg>
+                <input type="text" id="name" class="base-input" formControlName="name" placeholder="Main Street Restaurant">
+            </div>
+            @if (utils.isValidField(locationForm, 'name')) {
+                <p class="text-red-500 text-xs">{{ utils.getErrorField(locationForm, 'name') }}</p>
+            }
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+            <label for="businessType" class="text-sm font-semibold text-slate-700 ml-2">Business Type</label>
+            <div class="flex items-center gap-3 border border-slate-300 rounded-xl px-4 py-3 focus-within:border-indigo-400 focus-within:ring-2 focus-within:ring-indigo-100 transition-all">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 4H4v2l8 5 8-5V4zM4 13h16v7H4v-7z" fill="#90a19b"/>
+                </svg>
+                <select id="businessType" class="base-input" formControlName="businessType">
+                    @for (type of businessTypes; track $index) {
+                        <option [value]="type">{{ type.replace('_', ' ') }}</option>
+                    }
+                </select>
+            </div>
+            @if (utils.isValidField(locationForm, 'businessType')) {
+                <p class="text-red-500 text-xs">{{ utils.getErrorField(locationForm, 'businessType') }}</p>
+            }
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+            <label for="state" class="text-sm font-semibold text-slate-700 ml-2">State</label>
+            <div class="flex items-center gap-3 border border-slate-300 rounded-xl px-4 py-3 focus-within:border-indigo-400 focus-within:ring-2 focus-within:ring-indigo-100 transition-all">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="#90a19b"/>
+                </svg>
+                <select id="state" class="base-input" formControlName="state">
+                    <option value="">Select a state</option>
+                    @for (state of states; track $index) {
+                        <option [value]="state">{{ state }}</option>
+                    }
+                </select>
+            </div>
+            @if (utils.isValidField(locationForm, 'state')) {
+                <p class="text-red-500 text-xs">{{ utils.getErrorField(locationForm, 'state') }}</p>
+            }
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+            <label for="city" class="text-sm font-semibold text-slate-700 ml-2">City</label>
+            <div class="flex items-center gap-3 border border-slate-300 rounded-xl px-4 py-3 focus-within:border-indigo-400 focus-within:ring-2 focus-within:ring-indigo-100 transition-all">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="#90a19b"/>
+                </svg>
+                <input type="text" id="city" class="base-input" formControlName="city" placeholder="Houston">
+            </div>
+            @if (utils.isValidField(locationForm, 'city')) {
+                <p class="text-red-500 text-xs">{{ utils.getErrorField(locationForm, 'city') }}</p>
+            }
+        </div>
+
+        <div class="col-span-full flex flex-row justify-center">
+            <button class="base-button linear-ic w-1/4" type="submit">Save</button>
+        </div>
+
+    </form>
+</app-generic-dialog>

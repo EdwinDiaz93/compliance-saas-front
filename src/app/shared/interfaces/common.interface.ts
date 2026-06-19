@@ -6,13 +6,20 @@ export interface DialogResult {
 
 export interface ErrorResponse {
     statusCode: number;
-    error:      string;
-    message:    any;
+    error: string;
+    message: any;
 }
 
 export interface CommonResponse<T> {
-    data:         T[];
+    data: T[];
     recordsFound: number;
     totalRecords: number;
 }
 
+
+
+export interface PaginationControls {
+    currentPage: number;
+    perPage: number;
+    totalPages: number;
+}

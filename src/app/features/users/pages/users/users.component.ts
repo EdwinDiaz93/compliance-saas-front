@@ -1,24 +1,39 @@
 import Swal from 'sweetalert2';
+import { NgxPaginationModule } from 'ngx-pagination'
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AddEditUsersComponents } from '@shared/components/dialogs';
-import { DialogResult, ErrorResponse, User, UsersFilters } from '@shared/interfaces';
+import { DialogResult, ErrorResponse, PaginationControls, User, UsersFilters } from '@shared/interfaces';
 import { NotificationService } from '@shared/services/notification.service';
 import { UserService } from '@features/users/services/user.service';
 import { UtilsService } from '@shared/utils';
+import { SharedModule } from '@shared/shared-module';
+import { MatTabChangeEvent } from '@angular/material/tabs';
+
 
 @Component({
   selector: 'app-users.component',
-  imports: [],
+  imports: [SharedModule, NgxPaginationModule],
   templateUrl: './users.component.html',
   styleUrl: './users.component.css',
 })
 export class UsersComponent implements OnInit {
+
+
+
   public users = signal<User[]>([]);
   public selectedUsers = signal<User[]>([]);
 
   public checkAll = signal<boolean>(false);
+  public tabIndex = signal<number>(0);
+
+  public paginationControls: PaginationControls = {
+    currentPage: 1,
+    perPage: 5,
+    totalPages: 0
+  }
+
   private isLoading = signal<boolean>(false);
 
   private readonly userService = inject(UserService);
@@ -27,8 +42,9 @@ export class UsersComponent implements OnInit {
   private dialog = inject(MatDialog);
 
 
+
   ngOnInit(): void {
-    this.getUsers({ offset: 0, limit: 10 });
+    this.getUsers({ offset: 0, limit: this.paginationControls.perPage });
   }
 
   getUsers(filters: UsersFilters) {
@@ -36,6 +52,7 @@ export class UsersComponent implements OnInit {
     this.userService.getUsers(filters).subscribe({
       next: (response) => {
         this.users.set(response.data);
+        this.paginationControls.totalPages = response.totalRecords;
       },
       error: (error: HttpErrorResponse) => {
         const err: ErrorResponse = error.error;
@@ -79,10 +96,7 @@ export class UsersComponent implements OnInit {
       switch (result.action) {
         case 'Save':
           this.notificationService.show("User created successfully");
-          this.getUsers({
-            offset: 0,
-            limit: 10
-          });
+          this.getUsers(this.currentFilters());
           break;
         case 'Cancel':
           this.notificationService.show("Canceled");
@@ -98,7 +112,7 @@ export class UsersComponent implements OnInit {
       // one invitation
       this.userService.sendInvitations([userId]).subscribe({
         next: () => {
-          this.getUsers({ offset: 0, limit: 10 })
+          this.getUsers(this.currentFilters())
         },
         error: (error: HttpErrorResponse) => {
           const err: ErrorResponse = error.error;
@@ -118,7 +132,7 @@ export class UsersComponent implements OnInit {
       }
       this.userService.sendInvitations(userIds).subscribe({
         next: () => {
-          this.getUsers({ offset: 0, limit: 10 })
+          this.getUsers(this.currentFilters())
         },
         error: (error: HttpErrorResponse) => {
           const err: ErrorResponse = error.error;
@@ -147,11 +161,8 @@ export class UsersComponent implements OnInit {
           }).afterClosed().subscribe((result: DialogResult) => {
             switch (result.action) {
               case 'Save':
-                this.notificationService.show("User created successfully");
-                this.getUsers({
-                  offset: 0,
-                  limit: 10
-                });
+                this.notificationService.show("User updated successfully");
+                this.getUsers(this.currentFilters());
                 break;
               case 'Cancel':
                 this.notificationService.show("Canceled");
@@ -167,6 +178,26 @@ export class UsersComponent implements OnInit {
       });
   }
 
+  tabChange(event: MatTabChangeEvent) {
+    this.tabIndex.set(event.index);
+    switch (this.tabIndex()) {
+      case 0:
+        this.getUsers({
+          offset: 0,
+          limit: this.paginationControls.perPage,
+        });
+        break;
+      case 1:
+        this.getUsers({
+          offset: 0,
+          limit: this.paginationControls.perPage,
+          filters: {
+            status: 'DELETED'
+          }
+        });
+        break;
+    }
+  }
 
   deleteUser(id: string) {
     const user = this.users().find(user => user.id === id);
@@ -188,10 +219,7 @@ export class UsersComponent implements OnInit {
           next: () => {
             this.isLoading.set(false);
             this.notificationService.show(`User ${user.firstName} ${user.lastName} deleted!`);
-            this.getUsers({
-              offset: 0,
-              limit: 10
-            })
+            this.getUsers(this.currentFilters())
           },
           error: (error: HttpErrorResponse) => {
             const err = error.error as ErrorResponse;
@@ -211,6 +239,60 @@ export class UsersComponent implements OnInit {
         })
       }
     });
+  }
+  restoreUser(userId: string) {
+    const user = this.users().find((user) => user.id === userId)!;
+    Swal.fire({
+      title: "Restore this user?",
+      text: `You are about to restore the user ${user.firstName} ${user.lastName}`,
+      icon: "question",
+      showCancelButton: true,
+      showConfirmButton: true,
+      confirmButtonColor: UtilsService.confirmButtonColor,
+      cancelButtonColor: UtilsService.cancelButtonColor
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.userService.restoreUser(userId).subscribe({
+          next: () => {
+            this.isLoading.set(false);
+            this.getUsers(this.currentFilters())
+          },
+          error: (error: HttpErrorResponse) => {
+            const err = error.error as ErrorResponse;
+
+            this.isLoading.set(false);
+
+            if (err.statusCode === 429) this.notificationService.show("Too many attemps wait 5 minutes and try again")
+
+            if (err.statusCode === 400) {
+              this.notificationService.show('Some fields are invalid');
+            }
+          },
+          complete: () => {
+            this.isLoading.set(false);
+          }
+
+        })
+      }
+    })
+  }
+  changePage(page: number) {
+    this.paginationControls.currentPage = page;
+    const offset = (page - 1) * this.paginationControls.perPage;
+    const filters: UsersFilters = {
+      offset,
+      limit: this.paginationControls.perPage,
+      ...(this.tabIndex() === 1 && { filters: { status: 'DELETED' } })
+    };
+    this.getUsers(filters);
+  }
+
+  private currentFilters(): UsersFilters {
+    return {
+      offset: 0,
+      limit: this.paginationControls.perPage,
+      ...(this.tabIndex() === 1 && { filters: { status: 'DELETED' } })
+    };
   }
 
 
