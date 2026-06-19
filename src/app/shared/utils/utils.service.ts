@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-
+import moment from 'moment'
 @Injectable({
   providedIn: 'root',
 })
@@ -27,6 +27,15 @@ export class UtilsService {
 
     return message;
   }
+
+  formatDateStandart(date:Date){
+    return moment(date).format('MM/DD/YY')
+  }
+
+  formatDateTime(date:Date){
+    return moment(date).format('MM/DD/YY hh:mm a')
+  }
+
   isValidField(form: FormGroup, key: string) {
     return form.get(key)?.invalid && form.get(key)?.touched;
   }

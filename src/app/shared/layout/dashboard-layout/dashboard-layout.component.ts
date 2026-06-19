@@ -30,6 +30,7 @@ export class DashboardLayoutComponent {
     const p = this.authService.getPayload();
     return [p?.firstName, p?.lastName].filter(Boolean).join(' ');
   })();
+  protected readonly rol = this.authService.getPayload()?.role;
 
   navGroups: NavGroup[] = [
     {

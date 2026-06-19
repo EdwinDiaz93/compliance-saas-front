@@ -122,7 +122,7 @@
         <div class="overflow-hidden transition-all duration-300"
           [class.w-0]="!sidebarOpen()" [class.opacity-0]="!sidebarOpen()">
           <p class="text-white text-sm font-semibold whitespace-nowrap">Edwin Diaz</p>
-          <p class="text-white/50 text-xs whitespace-nowrap">Owner</p>
+          <p class="text-white/50 text-xs whitespace-nowrap">{{rol}}</p>
         </div>
       </div>
       <button (click)="logout()"

@@ -3,8 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs';
 import { environment } from 'environments';
-import { loginRequest } from '../interfaces';
+
 import { AppRole } from '@core/guards';
+import { loginRequest } from '@shared/interfaces';
 
 interface AuthResponse {
   access_token: string;
@@ -12,6 +13,7 @@ interface AuthResponse {
 }
 
 export type TenantStatus = 'TRIAL' | 'ACTIVE' | 'SUSPENDED';
+
 
 export interface JwtPayload {
   sub: string;

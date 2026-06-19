@@ -1,1 +1,101 @@
-<p>add-edit-users.components works!</p>
+<app-generic-dialog firstButtonText="Save" (onFirstClick)="saveUser()" [title]="title" (onCancelClick)="onCancel()">
+
+
+    <form [formGroup]="userForm" class="grid grid-cols-2 p-5 gap-10 mb-10" (ngSubmit)="saveUser()">
+        <div class="flex flex-col gap-1.5">
+            <label for="email" class="text-sm font-semibold text-slate-700 ml-2">Email</label>
+            <div
+                class="flex items-center gap-3 border border-slate-300 rounded-xl px-4 py-3 focus-within:border-indigo-400 focus-within:ring-2 focus-within:ring-indigo-100 transition-all">
+                <svg class="w-5 h-5" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                    <g id="SVGRepo_iconCarrier">
+                        <path
+                            d="M8 7C9.65685 7 11 5.65685 11 4C11 2.34315 9.65685 1 8 1C6.34315 1 5 2.34315 5 4C5 5.65685 6.34315 7 8 7Z"
+                            fill="#90a19b"></path>
+                        <path d="M14 12C14 10.3431 12.6569 9 11 9H5C3.34315 9 2 10.3431 2 12V15H14V12Z" fill="#90a19b">
+                        </path>
+                    </g>
+                </svg>
+                <input type="email" id="email" class="base-input" formControlName="email" placeholder="you@example.com">
+            </div>
+            @if (utils.isValidField(userForm, 'email')) {
+            <p class="text-red-500 text-xs">{{ utils.getErrorField(userForm, 'email') }}</p>
+            }
+        </div>
+        <div class="flex flex-col gap-1.5">
+            <label for="first_name" class="text-sm font-semibold text-slate-700 ml-2">First Name</label>
+            <div
+                class="flex items-center gap-3 border border-slate-300 rounded-xl px-4 py-3 focus-within:border-indigo-400 focus-within:ring-2 focus-within:ring-indigo-100 transition-all">
+                <svg class="w-5 h-5" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                    <g id="SVGRepo_iconCarrier">
+                        <path
+                            d="M8 7C9.65685 7 11 5.65685 11 4C11 2.34315 9.65685 1 8 1C6.34315 1 5 2.34315 5 4C5 5.65685 6.34315 7 8 7Z"
+                            fill="#90a19b"></path>
+                        <path d="M14 12C14 10.3431 12.6569 9 11 9H5C3.34315 9 2 10.3431 2 12V15H14V12Z" fill="#90a19b">
+                        </path>
+                    </g>
+                </svg>
+                <input type="first_name" id="first_name" class="base-input" formControlName="first_name"
+                    placeholder="John">
+            </div>
+            @if (utils.isValidField(userForm, 'first_name')) {
+            <p class="text-red-500 text-xs">{{ utils.getErrorField(userForm, 'first_name') }}</p>
+            }
+        </div>
+        <div class="flex flex-col gap-1.5">
+            <label for="last_name" class="text-sm font-semibold text-slate-700 ml-2">Last Name</label>
+            <div
+                class="flex items-center gap-3 border border-slate-300 rounded-xl px-4 py-3 focus-within:border-indigo-400 focus-within:ring-2 focus-within:ring-indigo-100 transition-all">
+                <svg class="w-5 h-5" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                    <g id="SVGRepo_iconCarrier">
+                        <path
+                            d="M8 7C9.65685 7 11 5.65685 11 4C11 2.34315 9.65685 1 8 1C6.34315 1 5 2.34315 5 4C5 5.65685 6.34315 7 8 7Z"
+                            fill="#90a19b"></path>
+                        <path d="M14 12C14 10.3431 12.6569 9 11 9H5C3.34315 9 2 10.3431 2 12V15H14V12Z" fill="#90a19b">
+                        </path>
+                    </g>
+                </svg>
+                <input type="last_name" id="last_name" class="base-input" formControlName="last_name" placeholder="Doe">
+            </div>
+            @if (utils.isValidField(userForm, 'last_name')) {
+            <p class="text-red-500 text-xs">{{ utils.getErrorField(userForm, 'last_name') }}</p>
+            }
+        </div>
+        <div class="flex flex-col gap-1.5">
+            <label for="rol" class="text-sm font-semibold text-slate-700 ml-2">Rol</label>
+            <div
+                class="flex items-center gap-3 border border-slate-300 rounded-xl px-4 py-3 focus-within:border-indigo-400 focus-within:ring-2 focus-within:ring-indigo-100 transition-all">
+                <svg class="w-5 h-5" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                    <g id="SVGRepo_iconCarrier">
+                        <path
+                            d="M8 7C9.65685 7 11 5.65685 11 4C11 2.34315 9.65685 1 8 1C6.34315 1 5 2.34315 5 4C5 5.65685 6.34315 7 8 7Z"
+                            fill="#90a19b"></path>
+                        <path d="M14 12C14 10.3431 12.6569 9 11 9H5C3.34315 9 2 10.3431 2 12V15H14V12Z" fill="#90a19b">
+                        </path>
+                    </g>
+                </svg>
+                <select type="rol" id="rol" class="base-input" formControlName="rol" placeholder="John">
+
+                    @for (rol of roles; track $index) {
+                    <option [value]="rol">{{rol}}</option>
+                    }
+                </select>
+            </div>
+            @if (utils.isValidField(userForm, 'rol')) {
+            <p class="text-red-500 text-xs">{{ utils.getErrorField(userForm, 'rol') }}</p>
+            }
+        </div>
+        <div class="col-span-full flex flex-row justify-center">
+            <button class="base-button linear-ic w-1/4" type="submit">Save</button>
+        </div>
+    </form>
+
+
+</app-generic-dialog>

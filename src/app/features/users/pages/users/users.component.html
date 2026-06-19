@@ -1,42 +1,104 @@
-<div class="relative overflow-x-auto bg-neutral-primary-soft shadow-xs rounded-base border border-default">
-    <table class="w-full text-sm text-left rtl:text-right text-body">
+<div class="relative overflow-x-auto bg-neutral-primary-soft shadow-xs rounded-base ">
+
+
+    <button (click)="addUser()" class="base-button w-40 linear-ic mb-5">Add User</button>
+
+    @if (checkAll()) {
+    <button (click)="sendInvitations()" class="base-button w-40 linear-ic ml-5 mb-5">Send Invitations</button>
+    }
+
+    <table class="w-full text-sm text-left rtl:text-right text-body border border-default">
         <thead class="bg-neutral-secondary-soft border-b border-default linear-ic text-white">
             <tr>
-                <th scope="col" class="px-6 py-3 font-medium">
-                    Product name
+                <th scope="col" class="px-6 py-3 font-medium flex flex-row item-center">
+                    <input type="checkbox" class="accent-teal-800 scale-150" [checked]="checkAll()"
+                        (change)="onCheckAll()" />
                 </th>
                 <th scope="col" class="px-6 py-3 font-medium">
-                    Color
+                    First Name
                 </th>
                 <th scope="col" class="px-6 py-3 font-medium">
-                    Category
+                    Last Name
                 </th>
                 <th scope="col" class="px-6 py-3 font-medium">
-                    Price
+                    Email
                 </th>
                 <th scope="col" class="px-6 py-3 font-medium">
-                    Action
+                    Rol
+                </th>
+                <th scope="col" class="px-6 py-3 font-medium">
+                    Status
+                </th>
+                <th scope="col" class="px-6 py-3 font-medium">
+                    Last Login
+                </th>
+                <th scope="col" class="px-6 py-3 font-medium">
+                    Actions
                 </th>
             </tr>
         </thead>
         <tbody>
+            @for (user of users(); track $index) {
             <tr class="odd:bg-neutral-primary even:bg-neutral-secondary-soft border-b border-default">
-                <th scope="row" class="px-6 py-4 font-medium text-heading whitespace-nowrap">
-                    Apple MacBook Pro 17"
-                </th>
-                <td class="px-6 py-4">
-                    Silver
+                <td scope="row" class="px-6 py-4 font-medium text-heading whitespace-nowrap">
+                    <input type="checkbox" class="accent-teal-800 scale-150" [disabled]="user.status!=='PENDING'"
+                        [checked]="user.selected" (change)="checkOne(user.id)" />
+                </td>
+                <td scope="row" class="px-6 py-4 font-medium text-heading whitespace-nowrap">
+                    {{user.firstName}}
                 </td>
                 <td class="px-6 py-4">
-                    Laptop
+                    {{user.lastName}}
                 </td>
                 <td class="px-6 py-4">
-                    $2999
+                    {{user.email}}
                 </td>
                 <td class="px-6 py-4">
-                    <a href="#" class="font-medium text-fg-brand hover:underline">Edit</a>
+                    {{user.role}}
+                </td>
+                <td class="px-6 py-4">
+                    {{user.status}}
+                </td>
+                <td class="px-6 py-4">
+                    @if (user.lastLoginAt) {
+                    {{utils.formatDateTime(user.lastLoginAt)}}
+                    }@else{
+                    Not logged yet
+                    }
+                </td>
+                <td class="px-6 py-4 flex flex-row justify-around">
+                    @if (user.status==='PENDING') {
+                    <svg (click)="editUser(user.id)" class="w-5 h-5 text-teal-800 cursor-pointer " viewBox="0 0 24 24"
+                        fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <path
+                                d="M21.2799 6.40005L11.7399 15.94C10.7899 16.89 7.96987 17.33 7.33987 16.7C6.70987 16.07 7.13987 13.25 8.08987 12.3L17.6399 2.75002C17.8754 2.49308 18.1605 2.28654 18.4781 2.14284C18.7956 1.99914 19.139 1.92124 19.4875 1.9139C19.8359 1.90657 20.1823 1.96991 20.5056 2.10012C20.8289 2.23033 21.1225 2.42473 21.3686 2.67153C21.6147 2.91833 21.8083 3.21243 21.9376 3.53609C22.0669 3.85976 22.1294 4.20626 22.1211 4.55471C22.1128 4.90316 22.0339 5.24635 21.8894 5.5635C21.7448 5.88065 21.5375 6.16524 21.2799 6.40005V6.40005Z"
+                                stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            </path>
+                            <path
+                                d="M11 4H6C4.93913 4 3.92178 4.42142 3.17163 5.17157C2.42149 5.92172 2 6.93913 2 8V18C2 19.0609 2.42149 20.0783 3.17163 20.8284C3.92178 21.5786 4.93913 22 6 22H17C19.21 22 20 20.2 20 18V13"
+                                stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            </path>
+                        </g>
+                    </svg>
+
+                    <svg class="w-5 h-5 text-teal-800 cursor-pointer " viewBox="0 0 24 24" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <path
+                                d="M10.3009 13.6949L20.102 3.89742M10.5795 14.1355L12.8019 18.5804C13.339 19.6545 13.6075 20.1916 13.9458 20.3356C14.2394 20.4606 14.575 20.4379 14.8492 20.2747C15.1651 20.0866 15.3591 19.5183 15.7472 18.3818L19.9463 6.08434C20.2845 5.09409 20.4535 4.59896 20.3378 4.27142C20.2371 3.98648 20.013 3.76234 19.7281 3.66167C19.4005 3.54595 18.9054 3.71502 17.9151 4.05315L5.61763 8.2523C4.48114 8.64037 3.91289 8.83441 3.72478 9.15032C3.56153 9.42447 3.53891 9.76007 3.66389 10.0536C3.80791 10.3919 4.34498 10.6605 5.41912 11.1975L9.86397 13.42C10.041 13.5085 10.1295 13.5527 10.2061 13.6118C10.2742 13.6643 10.3352 13.7253 10.3876 13.7933C10.4468 13.87 10.491 13.9585 10.5795 14.1355Z"
+                                stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </g>
+                    </svg>
+                    }
                 </td>
             </tr>
+            }
+
 
         </tbody>
     </table>
