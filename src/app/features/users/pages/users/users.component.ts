@@ -1,12 +1,12 @@
-import { HttpErrorResponse } from '@angular/common/http';
+import Swal from 'sweetalert2';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { UserService } from '@features/users/services/user.service';
+import { HttpErrorResponse } from '@angular/common/http';
 import { AddEditUsersComponents } from '@shared/components/dialogs';
 import { DialogResult, ErrorResponse, User, UsersFilters } from '@shared/interfaces';
 import { NotificationService } from '@shared/services/notification.service';
+import { UserService } from '@features/users/services/user.service';
 import { UtilsService } from '@shared/utils';
-import { switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-users.component',
@@ -15,11 +15,6 @@ import { switchMap } from 'rxjs';
   styleUrl: './users.component.css',
 })
 export class UsersComponent implements OnInit {
-
-
-
-
-
   public users = signal<User[]>([]);
   public selectedUsers = signal<User[]>([]);
 
@@ -84,6 +79,10 @@ export class UsersComponent implements OnInit {
       switch (result.action) {
         case 'Save':
           this.notificationService.show("User created successfully");
+          this.getUsers({
+            offset: 0,
+            limit: 10
+          });
           break;
         case 'Cancel':
           this.notificationService.show("Canceled");
@@ -105,9 +104,10 @@ export class UsersComponent implements OnInit {
           const err: ErrorResponse = error.error;
           if (err.statusCode > 400) this.notificationService.show('Error sending invitations to  users');
         },
-        complete: () => { 
+        complete: () => {
           this.notificationService.show("Email Sent");
-          this.isLoading.set(false); }
+          this.isLoading.set(false);
+        }
       });
     }
     else {
@@ -124,9 +124,10 @@ export class UsersComponent implements OnInit {
           const err: ErrorResponse = error.error;
           if (err.statusCode > 400) this.notificationService.show('Error sending invitations to  users');
         },
-        complete: () => { 
+        complete: () => {
           this.notificationService.show("Email Sent");
-          this.isLoading.set(false); }
+          this.isLoading.set(false);
+        }
       });
     }
   }
@@ -166,6 +167,51 @@ export class UsersComponent implements OnInit {
       });
   }
 
+
+  deleteUser(id: string) {
+    const user = this.users().find(user => user.id === id);
+    if (!user) return;
+
+    Swal.fire({
+      title: "Delete this user?",
+      text: `You are about to delete the user ${user.firstName} ${user.lastName}`,
+      icon: "question",
+      showCancelButton: true,
+      showConfirmButton: true,
+      confirmButtonColor: UtilsService.confirmButtonColor,
+      cancelButtonColor: UtilsService.cancelButtonColor
+    }).then((result) => {
+
+      if (result.isConfirmed) {
+        this.isLoading.set(true)
+        this.userService.deleteUser(user.id).subscribe({
+          next: () => {
+            this.isLoading.set(false);
+            this.notificationService.show(`User ${user.firstName} ${user.lastName} deleted!`);
+            this.getUsers({
+              offset: 0,
+              limit: 10
+            })
+          },
+          error: (error: HttpErrorResponse) => {
+            const err = error.error as ErrorResponse;
+
+            this.isLoading.set(false);
+
+            if (err.statusCode === 429) this.notificationService.show("Too many attemps wait 5 minutes and try again")
+
+            if (err.statusCode === 400) {
+              this.notificationService.show('Some fields are invalid');
+            }
+
+          },
+          complete: () => {
+            this.isLoading.set(false);
+          }
+        })
+      }
+    });
+  }
 
 
 

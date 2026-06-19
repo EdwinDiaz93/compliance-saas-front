@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 export class UserService {
 
 
+
   private readonly baseUrl = environment.baseUrl;
   private readonly httpClient = inject(HttpClient);
 
@@ -37,5 +38,8 @@ export class UserService {
     return this.httpClient.post(`${this.baseUrl}/users/invitations`, invitationsRequest);
   }
 
+  deleteUser(id: string) {
+    return this.httpClient.delete(`${this.baseUrl}/users/${id}`);
+  }
 
 }

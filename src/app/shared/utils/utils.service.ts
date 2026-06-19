@@ -11,6 +11,7 @@ export class UtilsService {
       return null;
     let message: string = '';
     for (const error of errors) {
+      
       switch (error) {
         case 'required':
           message = `The ${this.transformReadableString(key)} field  is required`
@@ -18,6 +19,10 @@ export class UtilsService {
 
         case 'pattern':
           message = `The ${this.transformReadableString(key)} is invalid`
+          break
+
+        case 'minlength':
+          message = `The ${this.transformReadableString(key)} required at least ${form.get(key)?.errors!['minlength']['requiredLength']} characteres`
           break
 
         default:
@@ -47,4 +52,6 @@ export class UtilsService {
   }
 
   public static readonly emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;
+  public static readonly confirmButtonColor:string='#00695C'
+  public static readonly cancelButtonColor:string='#EF5350'
 }
