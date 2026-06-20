@@ -1,0 +1,94 @@
+<app-generic-dialog [title]="title" (onCancelClick)="onCancel()">
+    <form [formGroup]="complianceForm" class="grid grid-cols-2 p-5 gap-8 mb-10" (ngSubmit)="saveCompliance()">
+
+        <div class="flex flex-col gap-1.5">
+            <label class="text-sm font-semibold text-slate-700 ml-2">License / Document Name</label>
+            <div class="flex items-center gap-3 border border-slate-300 rounded-xl px-4 py-3 focus-within:border-indigo-400 focus-within:ring-2 focus-within:ring-indigo-100 transition-all">
+                <svg class="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24" fill="none">
+                    <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" stroke="#90a19b" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <input type="text" class="base-input" formControlName="name" placeholder="FDA License">
+            </div>
+            @if (utils.isValidField(complianceForm, 'name')) {
+                <p class="text-red-500 text-xs">{{ utils.getErrorField(complianceForm, 'name') }}</p>
+            }
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+            <label class="text-sm font-semibold text-slate-700 ml-2">Category</label>
+            <div class="flex items-center gap-3 border border-slate-300 rounded-xl px-4 py-3 focus-within:border-indigo-400 focus-within:ring-2 focus-within:ring-indigo-100 transition-all">
+                <svg class="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24" fill="none">
+                    <path d="M7 7h10M7 12h10M7 17h6" stroke="#90a19b" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <select class="base-input" formControlName="category">
+                    @for (type of licenseTypes; track $index) {
+                        <option [value]="type">{{ type.replace(/_/g, ' ') }}</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+            <label class="text-sm font-semibold text-slate-700 ml-2">Issued At <span class="text-slate-400 font-normal">(optional)</span></label>
+            <div class="flex items-center gap-3 border border-slate-300 rounded-xl px-4 py-3 focus-within:border-indigo-400 focus-within:ring-2 focus-within:ring-indigo-100 transition-all">
+                <svg class="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24" fill="none">
+                    <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" stroke="#90a19b" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <input type="date" class="base-input" formControlName="issuedAt">
+            </div>
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+            <label class="text-sm font-semibold text-slate-700 ml-2">Expires At <span class="text-slate-400 font-normal">(optional)</span></label>
+            <div class="flex items-center gap-3 border border-slate-300 rounded-xl px-4 py-3 focus-within:border-indigo-400 focus-within:ring-2 focus-within:ring-indigo-100 transition-all">
+                <svg class="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24" fill="none">
+                    <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" stroke="#90a19b" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <input type="date" class="base-input" formControlName="expiresAt">
+            </div>
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+            <label class="text-sm font-semibold text-slate-700 ml-2">Issuing Authority <span class="text-slate-400 font-normal">(optional)</span></label>
+            <div class="flex items-center gap-3 border border-slate-300 rounded-xl px-4 py-3 focus-within:border-indigo-400 focus-within:ring-2 focus-within:ring-indigo-100 transition-all">
+                <svg class="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z" fill="#90a19b"/>
+                </svg>
+                <select class="base-input" formControlName="issuingAuthorityId">
+                    <option value="">None</option>
+                    @for (auth of authorities(); track $index) {
+                        <option [value]="auth.id">{{ auth.name }} ({{ auth.level }})</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        @if (isOwnerOrAdmin) {
+        <div class="flex flex-col gap-1.5">
+            <label class="text-sm font-semibold text-slate-700 ml-2">Assign To <span class="text-slate-400 font-normal">(optional)</span></label>
+            <div class="flex items-center gap-3 border border-slate-300 rounded-xl px-4 py-3 focus-within:border-indigo-400 focus-within:ring-2 focus-within:ring-indigo-100 transition-all">
+                <svg class="w-5 h-5 flex-shrink-0" viewBox="0 0 16 16" fill="none">
+                    <path d="M8 7C9.65685 7 11 5.65685 11 4C11 2.34315 9.65685 1 8 1C6.34315 1 5 2.34315 5 4C5 5.65685 6.34315 7 8 7Z" fill="#90a19b"/>
+                    <path d="M14 12C14 10.3431 12.6569 9 11 9H5C3.34315 9 2 10.3431 2 12V15H14V12Z" fill="#90a19b"/>
+                </svg>
+                <select class="base-input" formControlName="userId">
+                    <option value="">Unassigned (Business license)</option>
+                    @for (user of users(); track $index) {
+                        <option [value]="user.id">{{ user.firstName }} {{ user.lastName }}</option>
+                    }
+                </select>
+            </div>
+        </div>
+        }
+
+        <div class="col-span-full flex flex-col gap-1.5">
+            <label class="text-sm font-semibold text-slate-700 ml-2">Notes <span class="text-slate-400 font-normal">(optional)</span></label>
+            <textarea class="border border-slate-300 rounded-xl px-4 py-3 text-sm text-slate-700 placeholder-slate-400 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 transition-all resize-none" rows="3" formControlName="notes" placeholder="Any additional information..."></textarea>
+        </div>
+
+        <div class="col-span-full flex flex-row justify-center">
+            <button class="base-button linear-ic w-1/4" type="submit">Save</button>
+        </div>
+
+    </form>
+</app-generic-dialog>

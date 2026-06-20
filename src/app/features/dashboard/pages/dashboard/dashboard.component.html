@@ -1,1 +1,134 @@
-<p>dashboard.component works!</p>
+<div class="flex flex-col gap-6">
+
+    <!-- Location selector -->
+    @if (locations().length > 0) {
+    <div class="flex items-center gap-3 border border-slate-200 rounded-xl px-4 py-2 w-72 bg-white/60 backdrop-blur-sm focus-within:border-slate-400 transition-all">
+        <svg class="w-4 h-4 text-slate-400 flex-shrink-0" viewBox="0 0 24 24" fill="none">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="#94a3b8"/>
+        </svg>
+        <select class="base-input text-sm" (change)="onLocationChange($event)">
+            @for (loc of locations(); track $index) {
+                <option [value]="loc.id">{{ loc.name }} — {{ loc.state }}</option>
+            }
+        </select>
+    </div>
+    }
+
+    <!-- KPI Cards -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+
+        <!-- ACTIVE -->
+        <div class="bg-white/50 backdrop-blur-sm border border-slate-200/80 rounded-2xl p-5 flex flex-col gap-3">
+            <div class="flex items-center justify-between">
+                <div class="w-2 h-10 rounded-full linear-ic"></div>
+                <svg class="w-6 h-6 text-slate-300" viewBox="0 0 24 24" fill="none">
+                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+            </div>
+            <p class="text-4xl font-bold text-slate-800">{{ quantityFor('ACTIVE') }}</p>
+            <p class="text-xs font-medium text-slate-500 uppercase tracking-wide">Active</p>
+        </div>
+
+        <!-- EXPIRES_SOON -->
+        <div class="bg-white/50 backdrop-blur-sm border border-amber-200/80 rounded-2xl p-5 flex flex-col gap-3">
+            <div class="flex items-center justify-between">
+                <div class="w-2 h-10 rounded-full bg-amber-400"></div>
+                <svg class="w-6 h-6 text-amber-200" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+            </div>
+            <p class="text-4xl font-bold text-amber-600">{{ quantityFor('EXPIRES_SOON') }}</p>
+            <p class="text-xs font-medium text-slate-500 uppercase tracking-wide">Expires Soon</p>
+        </div>
+
+        <!-- EXPIRED -->
+        <div class="bg-white/50 backdrop-blur-sm border border-red-200/80 rounded-2xl p-5 flex flex-col gap-3">
+            <div class="flex items-center justify-between">
+                <div class="w-2 h-10 rounded-full bg-red-500"></div>
+                <svg class="w-6 h-6 text-red-200" viewBox="0 0 24 24" fill="none">
+                    <path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+            </div>
+            <p class="text-4xl font-bold text-red-600">{{ quantityFor('EXPIRED') }}</p>
+            <p class="text-xs font-medium text-slate-500 uppercase tracking-wide">Expired</p>
+        </div>
+
+        <!-- ARCHIVED -->
+        <div class="bg-white/50 backdrop-blur-sm border border-slate-200/80 rounded-2xl p-5 flex flex-col gap-3">
+            <div class="flex items-center justify-between">
+                <div class="w-2 h-10 rounded-full bg-slate-400"></div>
+                <svg class="w-6 h-6 text-slate-200" viewBox="0 0 24 24" fill="none">
+                    <path d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+            </div>
+            <p class="text-4xl font-bold text-slate-500">{{ quantityFor('ARCHIVED') }}</p>
+            <p class="text-xs font-medium text-slate-500 uppercase tracking-wide">Archived</p>
+        </div>
+
+    </div>
+
+    <!-- Users compliance summary -->
+    @if (usersSummary().length > 0) {
+    <div class="bg-white/50 backdrop-blur-sm border border-slate-200/80 rounded-2xl overflow-hidden">
+        <div class="px-6 py-4 border-b border-slate-100 flex items-center gap-2">
+            <div class="w-1 h-5 rounded-full linear-ic"></div>
+            <h2 class="text-sm font-semibold text-slate-700">Team Compliance Overview</h2>
+        </div>
+        <table class="w-full text-sm text-left">
+            <thead>
+                <tr class="linear-ic text-white text-xs uppercase">
+                    <th class="px-6 py-3 font-medium">Employee</th>
+                    <th class="px-6 py-3 font-medium text-center">Active</th>
+                    <th class="px-6 py-3 font-medium text-center">Expires Soon</th>
+                    <th class="px-6 py-3 font-medium text-center">Expired</th>
+                    <th class="px-6 py-3 font-medium text-center">Archived</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (user of usersSummary() | paginate:{
+                    id: 'dashboard_pagination',
+                    itemsPerPage: paginationControls.perPage,
+                    currentPage: paginationControls.currentPage,
+                    totalItems: paginationControls.totalPages
+                }; track $index) {
+                <tr class="odd:bg-white/40 even:bg-white/20 border-b border-slate-100/80 last:border-0">
+                    <td class="px-6 py-3">
+                        <p class="font-medium text-slate-700">{{ user.firstName }} {{ user.lastName }}</p>
+                        <p class="text-xs text-slate-400">{{ user.email }}</p>
+                    </td>
+                    <td class="px-6 py-3 text-center">
+                        <span class="text-teal-700 font-semibold">{{ user.compliancesStatus.ACTIVE }}</span>
+                    </td>
+                    <td class="px-6 py-3 text-center">
+                        <span class="text-amber-600 font-semibold">{{ user.compliancesStatus.EXPIRES_SOON }}</span>
+                    </td>
+                    <td class="px-6 py-3 text-center">
+                        <span class="text-red-600 font-semibold">{{ user.compliancesStatus.EXPIRED }}</span>
+                    </td>
+                    <td class="px-6 py-3 text-center">
+                        <span class="text-slate-400 font-semibold">{{ user.compliancesStatus.ARCHIVED }}</span>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+        <div class="flex justify-center py-4">
+            <pagination-controls id="dashboard_pagination" (pageChange)="changePage($event)"
+                [autoHide]="true" [responsive]="true" previousLabel="Previous" nextLabel="Next">
+            </pagination-controls>
+        </div>
+    </div>
+    }
+
+    <!-- Empty state: no locations -->
+    @if (locations().length === 0) {
+    <div class="flex items-center justify-center h-48">
+        <div class="border border-dashed border-slate-300 rounded-2xl p-10 flex flex-col items-center gap-3 text-center max-w-xs">
+            <p class="text-slate-500 text-sm font-medium">No locations yet</p>
+            <p class="text-slate-400 text-xs">Create your first location to see compliance stats here.</p>
+            <a routerLink="/locations" class="base-button linear-ic px-6">Go to Locations</a>
+        </div>
+    </div>
+    }
+
+</div>

@@ -1,1 +1,145 @@
-<p>compliances.component works!</p>
+<div class="relative overflow-x-auto bg-neutral-primary-soft shadow-xs rounded-base">
+
+    <!-- TRIAL: upgrade card -->
+    @if (isTrial()) {
+    <div class="flex items-center justify-center h-64">
+        <div class="border border-dashed border-slate-300 rounded-2xl p-10 flex flex-col items-center gap-4 text-center max-w-sm">
+            <svg class="w-10 h-10 text-slate-400" viewBox="0 0 24 24" fill="none">
+                <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z" fill="currentColor" opacity="0.3"/>
+                <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z" stroke="currentColor" stroke-width="1.5"/>
+            </svg>
+            <p class="text-slate-600 text-sm font-semibold">Subscription required</p>
+            <p class="text-slate-400 text-xs">Activate your plan to start tracking compliance documents across your locations.</p>
+            <a routerLink="/billing/checkout" class="base-button linear-ic px-6 text-center">Upgrade Now</a>
+        </div>
+    </div>
+    }
+
+    <!-- ACTIVE: no locations -->
+    @else if (locations().length === 0) {
+    <div class="flex items-center justify-center h-64">
+        <div class="border border-dashed border-slate-300 rounded-2xl p-10 flex flex-col items-center gap-4 text-center max-w-sm">
+            <svg class="w-10 h-10 text-slate-400" viewBox="0 0 24 24" fill="none">
+                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="currentColor" opacity="0.3"/>
+                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+            </svg>
+            <p class="text-slate-600 text-sm font-semibold">No locations yet</p>
+            <p class="text-slate-400 text-xs">Create your first location to start tracking compliance documents.</p>
+            <button (click)="goToLocations()" class="base-button linear-ic px-6">Create a Location</button>
+        </div>
+    </div>
+    }
+
+    <!-- ACTIVE: has locations -->
+    @else {
+
+    <!-- Location selector + Add button -->
+    <div class="flex flex-row items-center gap-4 mb-5">
+        <div class="flex items-center gap-3 border border-slate-300 rounded-xl px-4 py-2 focus-within:border-indigo-400 transition-all w-64">
+            <svg class="w-4 h-4 text-slate-400 flex-shrink-0" viewBox="0 0 24 24" fill="none">
+                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="#90a19b"/>
+            </svg>
+            <select class="base-input text-xs" (change)="onLocationChange($event)">
+                @for (loc of locations(); track $index) {
+                    <option [value]="loc.id">{{ loc.name }} — {{ loc.state }}</option>
+                }
+            </select>
+        </div>
+        <button (click)="addCompliance()" class="base-button linear-ic w-44">Add Compliance</button>
+        @if (isUploading()) {
+            <span class="text-xs text-slate-500 animate-pulse">Uploading document...</span>
+        }
+    </div>
+
+    <!-- Table -->
+    <table class="w-full text-sm text-left text-body border border-default">
+        <thead class="bg-neutral-secondary-soft border-b border-default linear-ic text-white">
+            <tr>
+                <th class="px-6 py-3 font-medium">Name</th>
+                <th class="px-6 py-3 font-medium">Category</th>
+                <th class="px-6 py-3 font-medium">Status</th>
+                <th class="px-6 py-3 font-medium">Expires At</th>
+                <th class="px-6 py-3 font-medium">Authority</th>
+                <th class="px-6 py-3 font-medium">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (compliance of compliances() | paginate:{
+                id: 'compliances_pagination',
+                itemsPerPage: paginationControls.perPage,
+                currentPage: paginationControls.currentPage
+            }; track $index) {
+            <tr class="odd:bg-neutral-primary even:bg-neutral-secondary-soft border-b border-default">
+                <td class="px-6 py-4 font-medium text-heading whitespace-nowrap">{{ compliance.name }}</td>
+                <td class="px-6 py-4 text-xs">{{ compliance.category.replace(/_/g, ' ') }}</td>
+                <td class="px-6 py-4">
+                    <span [class]="'text-xs font-medium px-2 py-0.5 rounded ' + statusClass(compliance.status)">
+                        {{ compliance.status.replace(/_/g, ' ') }}
+                    </span>
+                </td>
+                <td class="px-6 py-4 text-xs">
+                    {{ compliance.expiresAt ? (compliance.expiresAt | date:'MM/dd/yy') : '—' }}
+                </td>
+                <td class="px-6 py-4 text-xs">{{ compliance.issuingAuthority?.name ?? '—' }}</td>
+                <td class="px-6 py-4">
+                    <div class="flex flex-row gap-3 items-center">
+
+                        <!-- Edit -->
+                        <svg (click)="editCompliance(compliance.id)" class="w-4 h-4 cursor-pointer" viewBox="0 0 24 24" fill="none">
+                            <path d="M21.2799 6.40005L11.7399 15.94C10.7899 16.89 7.96987 17.33 7.33987 16.7C6.70987 16.07 7.13987 13.25 8.08987 12.3L17.6399 2.75002C18.3954 1.94969 19.6046 1.94969 20.3601 2.75002L21.2799 6.40005Z" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M11 4H6C4.93913 4 3.92178 4.42142 3.17163 5.17157C2.42149 5.92172 2 6.93913 2 8V18C2 19.0609 2.42149 20.0783 3.17163 20.8284C3.92178 21.5786 4.93913 22 6 22H17C19.21 22 20 20.2 20 18V13" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+
+                        <!-- Upload / Download document -->
+                        @if (!compliance.documentUrl) {
+                        <label [for]="'file-input-' + compliance.id" class="cursor-pointer">
+                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none">
+                                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </label>
+                        <input [id]="'file-input-' + compliance.id" type="file" class="hidden"
+                            accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
+                            (change)="uploadDocument(compliance.id, $event)">
+                        } @else {
+                        <svg (click)="downloadDocument(compliance.id)" class="w-4 h-4 cursor-pointer text-teal-700" viewBox="0 0 24 24" fill="none">
+                            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="#0d7377" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        }
+
+                        <!-- Archive -->
+                        @if (compliance.status !== 'ARCHIVED') {
+                        <svg (click)="archiveCompliance(compliance.id)" class="w-4 h-4 cursor-pointer" viewBox="0 0 24 24" fill="none">
+                            <path d="M21 8v13H3V8M1 3h22v5H1zM10 12h4" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        }
+
+                        <!-- Delete (OWNER only) -->
+                        @if (isOwner()) {
+                        <svg (click)="deleteCompliance(compliance.id)" class="w-4 h-4 cursor-pointer" viewBox="0 -0.5 21 21" fill="#000000">
+                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <g transform="translate(-179.000000, -360.000000)" fill="#000000">
+                                    <g transform="translate(56.000000, 160.000000)">
+                                        <path d="M130.35,216 L132.45,216 L132.45,208 L130.35,208 L130.35,216 Z M134.55,216 L136.65,216 L136.65,208 L134.55,208 L134.55,216 Z M128.25,218 L138.75,218 L138.75,206 L128.25,206 L128.25,218 Z M130.35,204 L136.65,204 L136.65,202 L130.35,202 L130.35,204 Z M138.75,204 L138.75,200 L128.25,200 L128.25,204 L123,204 L123,206 L126.15,206 L126.15,220 L140.85,220 L140.85,206 L144,206 L144,204 L138.75,204 Z"/>
+                                    </g>
+                                </g>
+                            </g>
+                        </svg>
+                        }
+
+                    </div>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="w-full flex flex-row justify-center mt-5">
+        <pagination-controls id="compliances_pagination" (pageChange)="changePage($event)" [maxSize]="9"
+            [directionLinks]="true" [autoHide]="true" [responsive]="true"
+            previousLabel="Previous" nextLabel="Next">
+        </pagination-controls>
+    </div>
+
+    }
+
+</div>

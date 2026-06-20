@@ -25,7 +25,7 @@ export class DashboardLayoutComponent {
   private readonly authService = inject(AuthService);
   sidebarOpen = signal(true);
   protected readonly environment = environment;
-  protected readonly isTrial = this.authService.getPayload()?.tenantStatus === 'TRIAL';
+  protected readonly isTrial = signal<boolean>(this.authService.getPayload()?.tenantStatus === 'TRIAL');
   protected readonly userName = (() => {
     const p = this.authService.getPayload();
     return [p?.firstName, p?.lastName].filter(Boolean).join(' ');

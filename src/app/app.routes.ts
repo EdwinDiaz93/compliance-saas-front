@@ -55,6 +55,11 @@ export const routes: Routes = [
                 loadChildren: () => import('@features/reports/report.routes').then(m => m.reportRoutes)
             },
             {
+                // Sin tenantActiveGuard — TRIAL y SUSPENDED necesitan acceder para suscribirse
+                path: 'billing',
+                loadChildren: () => import('@features/billing/billing.routes').then(m => m.billingRoutes)
+            },
+            {
                 path: '**',
                 redirectTo: 'dashboard'
             }

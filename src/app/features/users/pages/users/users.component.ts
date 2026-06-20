@@ -81,8 +81,9 @@ export class UsersComponent implements OnInit {
     const users = this.users().map((user) => ({ ...user, selected: user.id === userId ? !user.selected : user.selected }));
     this.users.set(users);
 
-    // Todos fueron chequeados
-    const allChecked = this.users().every(user => user.selected);
+    // Solo los PENDING pueden seleccionarse — checkAll se activa cuando todos los PENDING estan marcados
+    const pendingUsers = this.users().filter(user => user.status === 'PENDING');
+    const allChecked = pendingUsers.length > 0 && pendingUsers.every(user => user.selected);
     this.checkAll.set(allChecked);
   }
 
