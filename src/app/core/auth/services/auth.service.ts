@@ -1,4 +1,4 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs';
@@ -34,6 +34,12 @@ export class AuthService {
   private readonly USER_INFO_KEY = 'user_info';
 
   isAuthenticated = signal<boolean>(this.hasStoredUser());
+
+  // Signal reactivo del tenantStatus — se actualiza en saveUserInfo() cada vez que
+  // llega un nuevo token (login, refresh post-pago). Los componentes que dependen de
+  // este valor (sidebar locks, trial banner) reaccionan sin necesidad de recargar.
+  readonly tenantStatus = signal<TenantStatus | null>(this.getPayload()?.tenantStatus ?? null);
+  readonly isTrial = computed(() => this.tenantStatus() === 'TRIAL');
 
   login(payload: loginRequest) {
     return this.http.post<{ message: string }>(`${environment.baseUrl}/auth/login`, payload, {
@@ -95,11 +101,13 @@ export class AuthService {
   saveUserInfo(userInfo: UserInfo) {
     localStorage.setItem(this.USER_INFO_KEY, JSON.stringify(userInfo));
     this.isAuthenticated.set(true);
+    this.tenantStatus.set(userInfo.tenantStatus);
   }
 
   private clearUserInfo() {
     localStorage.removeItem(this.USER_INFO_KEY);
     this.isAuthenticated.set(false);
+    this.tenantStatus.set(null);
   }
 
   private hasStoredUser(): boolean {

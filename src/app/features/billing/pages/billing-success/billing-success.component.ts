@@ -14,6 +14,10 @@ export class BillingSuccessComponent implements OnInit {
 
     public status = signal<'loading' | 'done' | 'error'>('loading');
 
+    public goToDashboard() {
+        this.router.navigateByUrl('/dashboard');
+    }
+
     ngOnInit() {
         /**
          * Stripe redirige aqui despues de completar el pago.

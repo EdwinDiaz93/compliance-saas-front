@@ -21,6 +21,7 @@
         </div>
         <p class="text-slate-700 font-semibold">Payment successful!</p>
         <p class="text-slate-400 text-sm">Your account is active. Redirecting you to the dashboard...</p>
+        <button (click)="goToDashboard()" class="base-button linear-ic px-8 mt-2">Go to Dashboard</button>
         }
 
         @if (status() === 'error') {
@@ -32,6 +33,7 @@
         </div>
         <p class="text-slate-700 font-semibold">Almost there!</p>
         <p class="text-slate-400 text-sm">Your payment was received. Redirecting you to the dashboard...</p>
+        <button (click)="goToDashboard()" class="base-button linear-ic px-8 mt-2">Go to Dashboard</button>
         }
 
     </div>

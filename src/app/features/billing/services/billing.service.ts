@@ -15,6 +15,30 @@ export class BillingService {
      * El usuario es redirigido a Stripe para ingresar su tarjeta; el cobro ocurre al dia 15.
      */
     createCheckoutSession(plan: BillingPlan) {
-        return this.http.post<string>(`${this.baseUrl}/billing/checkout-session`, { plan });
+        // responseType: 'text' porque el backend devuelve el URL de Stripe como string plano,
+        // no como JSON — sin esto Angular intenta parsear el URL como JSON y lanza error de parseo
+        return this.http.post(`${this.baseUrl}/billing/checkout-session`, { plan }, { responseType: 'text' });
+    }
+
+    /**
+     * Cancela la suscripcion al final del periodo actual (no de inmediato).
+     * El tenant sigue ACTIVE hasta que vence el ciclo — Stripe dispara
+     * customer.subscription.deleted al vencer y el webhook suspende el tenant.
+     */
+    getSubscriptionStatus() {
+        return this.http.get<{
+            hasSubscription: boolean;
+            plan?: string;
+            cancelAtPeriodEnd?: boolean;
+            currentPeriodEnd?: string;
+        }>(`${this.baseUrl}/billing/subscription-status`);
+    }
+
+    cancelSubscription() {
+        return this.http.delete<{ message: string }>(`${this.baseUrl}/billing/cancel-subscription`);
+    }
+
+    resumeSubscription() {
+        return this.http.patch<{ message: string }>(`${this.baseUrl}/billing/resume-subscription`, {});
     }
 }
