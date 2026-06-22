@@ -22,7 +22,10 @@ export class AcceptInvitationComponent implements OnInit {
     const token = raw.replace(/ /g, '+');
 
     this.authService.acceptInvitation(token).subscribe({
-      next: () => this.router.navigateByUrl('/dashboard'),
+      next: (response) => {
+        const route = response.role === 'EMPLOYE' ? '/compliances' : '/dashboard';
+        this.router.navigateByUrl(route);
+      },
       error: () => this.status.set('error'),
     });
   }

@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { HttpErrorResponse } from '@angular/common/http';
 import { GenericDialogComponent } from '@shared/components/generic-dialog/generic-dialog.component';
@@ -45,6 +45,7 @@ export class AddEditComplianceComponent implements OnInit {
 
     private readonly compliance: ComplianceItem | null = this.data?.compliance ?? null;
     public readonly locationId: string = this.data?.locationId ?? '';
+    public readonly locationName: string = this.data?.locationName ?? '';
     public readonly payload = this.authService.getPayload();
     public readonly isOwnerOrAdmin = this.payload?.role === 'OWNER' || this.payload?.role === 'ADMIN';
 
@@ -53,12 +54,23 @@ export class AddEditComplianceComponent implements OnInit {
     public readonly complianceForm = this.formBuilder.group({
         name: ['', [Validators.required]],
         category: ['STATE_LICENSE', [Validators.required]],
-        expiresAt: [''],
         issuedAt: [''],
+        expiresAt: [''],
         issuingAuthorityId: [''],
         userId: [''],
         notes: [''],
-    });
+    }, { validators: this.expiresAfterIssued() });
+
+    private expiresAfterIssued(): ValidatorFn {
+        return (group: AbstractControl): ValidationErrors | null => {
+            const issued = group.get('issuedAt')?.value;
+            const expires = group.get('expiresAt')?.value;
+            if (issued && expires && expires < issued) {
+                return { expiresBeforeIssued: true };
+            }
+            return null;
+        };
+    }
 
     ngOnInit(): void {
         this.loadAuthorities();

@@ -1,4 +1,16 @@
 <app-generic-dialog [title]="title" (onCancelClick)="onCancel()">
+
+    @if (locationName) {
+    <div class="flex items-center gap-2 px-5 pt-4">
+        <svg class="w-4 h-4 text-indigo-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+            <circle cx="12" cy="9" r="2.5"/>
+        </svg>
+        <span class="text-xs font-medium text-slate-500">Adding to</span>
+        <span class="text-xs font-semibold text-indigo-600 bg-indigo-50 border border-indigo-200 px-2.5 py-0.5 rounded-full">{{ locationName }}</span>
+    </div>
+    }
+
     <form [formGroup]="complianceForm" class="grid grid-cols-2 p-5 gap-8 mb-10" (ngSubmit)="saveCompliance()">
 
         <div class="flex flex-col gap-1.5">
@@ -85,6 +97,15 @@
             <label class="text-sm font-semibold text-slate-700 ml-2">Notes <span class="text-slate-400 font-normal">(optional)</span></label>
             <textarea class="border border-slate-300 rounded-xl px-4 py-3 text-sm text-slate-700 placeholder-slate-400 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 transition-all resize-none" rows="3" formControlName="notes" placeholder="Any additional information..."></textarea>
         </div>
+
+        @if (complianceForm.hasError('expiresBeforeIssued')) {
+        <div class="col-span-full flex items-center gap-2 bg-red-50 border border-red-200 rounded-xl px-4 py-2.5">
+            <svg class="w-4 h-4 text-red-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+            <p class="text-red-600 text-xs font-medium">Expiration date cannot be earlier than the issued date.</p>
+        </div>
+        }
 
         <div class="col-span-full flex flex-row justify-center">
             <button class="base-button linear-ic w-1/4" type="submit">Save</button>

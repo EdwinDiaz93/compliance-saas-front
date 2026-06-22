@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { authGuard, tenantActiveGuard } from '@core/guards';
+import { authGuard, notFoundRedirectGuard, tenantActiveGuard } from '@core/guards';
 
 export const routes: Routes = [
 
@@ -61,7 +61,8 @@ export const routes: Routes = [
             },
             {
                 path: '**',
-                redirectTo: 'dashboard'
+                canActivate: [notFoundRedirectGuard],
+                loadComponent: () => import('@layout').then(c => c.DashboardLayoutComponent)
             }
         ]
     },
