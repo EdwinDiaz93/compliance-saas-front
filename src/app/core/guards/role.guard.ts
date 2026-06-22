@@ -13,6 +13,10 @@ export const roleGuard = (allowedRoles: AppRole[]): CanActivateFn => () => {
   const payload = authService.getPayload();
   if (!payload) return router.createUrlTree(['/auth/login']);
 
+  if (allowedRoles.includes('EMPLOYE')) {
+    return router.createUrlTree(['/compliances']);
+  }
+
   if (allowedRoles.includes(payload.role)) return true;
 
   return router.createUrlTree(['/dashboard']);
