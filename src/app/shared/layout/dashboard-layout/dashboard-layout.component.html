@@ -29,7 +29,7 @@
 
     <!-- Nav -->
     <nav class="flex-1 overflow-y-auto px-3 py-4 flex flex-col gap-6">
-      @for (group of navGroups; track group.title) {
+      @for (group of filteredNavGroups; track group.title) {
         <div>
           <p class="text-white/40 text-xs font-semibold uppercase tracking-widest px-2 mb-2 whitespace-nowrap overflow-hidden transition-all duration-300"
             [class.opacity-0]="!sidebarOpen()">

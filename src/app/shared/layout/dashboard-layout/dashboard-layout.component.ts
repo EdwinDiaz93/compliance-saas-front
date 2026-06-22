@@ -11,6 +11,7 @@ interface NavItem {
   icon: string;
   route: string;
   requiresActive?: boolean;
+  roles?: string[];
 }
 
 interface NavGroup {
@@ -53,25 +54,34 @@ export class DashboardLayoutComponent {
     {
       title: 'Main',
       items: [
-        { label: 'Dashboard', icon: 'dashboard', route: '/dashboard' },
+        { label: 'Dashboard', icon: 'dashboard', route: '/dashboard', roles: ['OWNER', 'ADMIN'] },
       ],
     },
     {
       title: 'Management',
       items: [
-        { label: 'Users', icon: 'users', route: '/users', requiresActive: true },
-        { label: 'Locations', icon: 'locations', route: '/locations', requiresActive: true },
-        { label: 'Authorities', icon: 'authorities', route: '/authorities', requiresActive: true },
+        { label: 'Users', icon: 'users', route: '/users', requiresActive: true, roles: ['OWNER', 'ADMIN'] },
+        { label: 'Locations', icon: 'locations', route: '/locations', requiresActive: true, roles: ['OWNER', 'ADMIN'] },
+        { label: 'Authorities', icon: 'authorities', route: '/authorities', requiresActive: true, roles: ['OWNER', 'ADMIN'] },
       ],
     },
     {
       title: 'Compliance',
       items: [
         { label: 'Compliances', icon: 'compliances', route: '/compliances', requiresActive: true },
-        { label: 'Reports', icon: 'reports', route: '/reports', requiresActive: true },
+        { label: 'Reports', icon: 'reports', route: '/reports', requiresActive: true, roles: ['OWNER'] },
       ],
     },
   ];
+
+  get filteredNavGroups(): NavGroup[] {
+    return this.navGroups
+      .map(group => ({
+        ...group,
+        items: group.items.filter(item => !item.roles || item.roles.includes(this.rol ?? ''))
+      }))
+      .filter(group => group.items.length > 0);
+  }
 
   toggleSidebar() {
     this.sidebarOpen.update(v => !v);
