@@ -95,7 +95,7 @@ export class CheckoutComponent implements OnInit {
     ngOnInit() {
         const status = this.authService.getPayload()?.tenantStatus;
         if (status === 'ACTIVE') {
-            this.notificationService.show('You already have an active subscription');
+            this.notificationService.warn('You already have an active subscription');
             this.router.navigateByUrl('/dashboard');
         }
     }
@@ -118,9 +118,9 @@ export class CheckoutComponent implements OnInit {
                 
                 this.loadingPlan.set(null);
                 if (error.error?.statusCode === 429)
-                    this.notificationService.show('Too many attempts, wait a moment and try again');
+                    this.notificationService.warn('Too many attempts, wait a moment and try again');
                 else
-                    this.notificationService.show('Error creating checkout session, try again');
+                    this.notificationService.error('Error creating checkout session, try again');
             }
         });
     }

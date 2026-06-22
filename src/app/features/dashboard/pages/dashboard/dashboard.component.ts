@@ -48,7 +48,7 @@ export class DashboardComponent implements OnInit {
         this.dashboardService.getLocationSummary(this.selectedLocationId()).subscribe({
             next: (res) => this.summary.set(res.data),
             error: (error: HttpErrorResponse) => {
-                if (error.error?.statusCode > 400) this.notificationService.show('Error loading summary');
+                if (error.error?.statusCode > 400) this.notificationService.error('Error loading summary');
             }
         });
     }
@@ -62,7 +62,7 @@ export class DashboardComponent implements OnInit {
                 this.paginationControls.totalPages = res.totalRecords;
             },
             error: (error: HttpErrorResponse) => {
-                if (error.error?.statusCode > 400) this.notificationService.show('Error loading users summary');
+                if (error.error?.statusCode > 400) this.notificationService.error('Error loading users summary');
             }
         });
     }

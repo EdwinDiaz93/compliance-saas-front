@@ -56,7 +56,7 @@ export class UsersComponent implements OnInit {
       },
       error: (error: HttpErrorResponse) => {
         const err: ErrorResponse = error.error;
-        if (err.statusCode > 400) this.notificationService.show('Error loading users');
+        if (err.statusCode > 400) this.notificationService.error('Error loading users');
       },
       complete: () => { this.isLoading.set(false); }
     });
@@ -117,7 +117,7 @@ export class UsersComponent implements OnInit {
         },
         error: (error: HttpErrorResponse) => {
           const err: ErrorResponse = error.error;
-          if (err.statusCode > 400) this.notificationService.show('Error sending invitations to  users');
+          if (err.statusCode > 400) this.notificationService.error('Error sending invitations to  users');
         },
         complete: () => {
           this.notificationService.show("Email Sent");
@@ -128,7 +128,7 @@ export class UsersComponent implements OnInit {
     else {
       const userIds = this.users().filter(user => user.selected).map(user => user.id);
       if (userIds.length === 0) {
-        this.notificationService.show('No users selected');
+        this.notificationService.warn('No users selected');
         return;
       }
       this.userService.sendInvitations(userIds).subscribe({
@@ -137,7 +137,7 @@ export class UsersComponent implements OnInit {
         },
         error: (error: HttpErrorResponse) => {
           const err: ErrorResponse = error.error;
-          if (err.statusCode > 400) this.notificationService.show('Error sending invitations to  users');
+          if (err.statusCode > 400) this.notificationService.error('Error sending invitations to  users');
         },
         complete: () => {
           this.notificationService.show("Email Sent");
@@ -173,7 +173,7 @@ export class UsersComponent implements OnInit {
         },
         error: (error: HttpErrorResponse) => {
           const err: ErrorResponse = error.error;
-          if (err.statusCode > 400) this.notificationService.show('Error loading this user');
+          if (err.statusCode > 400) this.notificationService.error('Error loading this user');
         },
         complete: () => { this.isLoading.set(false); }
       });
@@ -231,10 +231,10 @@ export class UsersComponent implements OnInit {
 
             this.isLoading.set(false);
 
-            if (err.statusCode === 429) this.notificationService.show("Too many attemps wait 5 minutes and try again")
+            if (err.statusCode === 429) this.notificationService.warn("Too many attemps wait 5 minutes and try again")
 
             if (err.statusCode === 400) {
-              this.notificationService.show('Some fields are invalid');
+              this.notificationService.error('Some fields are invalid');
             }
 
           },
@@ -271,10 +271,10 @@ export class UsersComponent implements OnInit {
 
             this.isLoading.set(false);
 
-            if (err.statusCode === 429) this.notificationService.show("Too many attemps wait 5 minutes and try again")
+            if (err.statusCode === 429) this.notificationService.warn("Too many attemps wait 5 minutes and try again")
 
             if (err.statusCode === 400) {
-              this.notificationService.show('Some fields are invalid');
+              this.notificationService.error('Some fields are invalid');
             }
           },
           complete: () => {

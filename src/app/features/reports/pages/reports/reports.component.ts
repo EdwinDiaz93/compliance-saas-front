@@ -37,7 +37,7 @@ export class ReportsComponent implements OnInit {
                 this.paginationControls.totalPages = res.totalRecords;
             },
             error: (error: HttpErrorResponse) => {
-                if (error.error?.statusCode > 400) this.notificationService.show('Error loading audit log');
+                if (error.error?.statusCode > 400) this.notificationService.error('Error loading audit log');
             }
         });
     }

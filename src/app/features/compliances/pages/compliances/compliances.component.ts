@@ -78,7 +78,7 @@ export class CompliancesComponent implements OnInit {
             },
             error: (error: HttpErrorResponse) => {
                 const err: ErrorResponse = error.error;
-                if (err?.statusCode > 400) this.notificationService.show('Error loading compliances');
+                if (err?.statusCode > 400) this.notificationService.error('Error loading compliances');
             },
             complete: () => { this.isLoading.set(false); }
         });
@@ -106,7 +106,7 @@ export class CompliancesComponent implements OnInit {
 
     addCompliance() {
         if (this.locations().length===0) {
-            this.notificationService.show('No locations found, contact the owner to add compliances. ');
+            this.notificationService.warn('No locations found, contact the owner to add compliances. ');
             return;
         }
         this.dialog.open(AddEditComplianceComponent, {
@@ -223,19 +223,19 @@ export class CompliancesComponent implements OnInit {
                             },
                             error: () => {
                                 this.isUploading.set(false);
-                                this.notificationService.show('Error saving document reference');
+                                this.notificationService.error('Error saving document reference');
                             }
                         });
                     },
                     error: () => {
                         this.isUploading.set(false);
-                        this.notificationService.show('Error uploading to storage');
+                        this.notificationService.error('Error uploading to storage');
                     }
                 });
             },
             error: () => {
                 this.isUploading.set(false);
-                this.notificationService.show('Error getting upload URL');
+                this.notificationService.error('Error getting upload URL');
             }
         });
     }
@@ -265,7 +265,7 @@ export class CompliancesComponent implements OnInit {
             },
             error: () => {
                 this.isDownloading.set(false);
-                this.notificationService.show('Error generating CSV');
+                this.notificationService.error('Error generating CSV');
             }
         });
     }

@@ -45,7 +45,7 @@ export class AuthoritiesComponent implements OnInit {
             },
             error: (error: HttpErrorResponse) => {
                 const err: ErrorResponse = error.error;
-                if (err.statusCode > 400) this.notificationService.show('Error loading authorities');
+                if (err.statusCode > 400) this.notificationService.error('Error loading authorities');
             },
             complete: () => { this.isLoading.set(false); }
         });
@@ -89,7 +89,7 @@ export class AuthoritiesComponent implements OnInit {
             error: (error: HttpErrorResponse) => {
                 const err: ErrorResponse = error.error;
                 this.isLoading.set(false);
-                if (err.statusCode > 400) this.notificationService.show('Error loading authority');
+                if (err.statusCode > 400) this.notificationService.error('Error loading authority');
             },
             complete: () => { this.isLoading.set(false); }
         });
@@ -123,7 +123,7 @@ export class AuthoritiesComponent implements OnInit {
                     error: (error: HttpErrorResponse) => {
                         const err = error.error as ErrorResponse;
                         this.isLoading.set(false);
-                        if (err.statusCode === 400) this.notificationService.show('Cannot delete this authority');
+                        if (err.statusCode === 400) this.notificationService.error('Cannot delete this authority');
                     },
                     complete: () => { this.isLoading.set(false); }
                 });

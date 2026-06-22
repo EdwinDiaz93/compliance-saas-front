@@ -37,7 +37,7 @@ export class LocationsComponent implements OnInit {
             next: (locations) => { this.locations.set(locations); },
             error: (error: HttpErrorResponse) => {
                 const err: ErrorResponse = error.error;
-                if (err.statusCode > 400) this.notificationService.show('Error loading locations');
+                if (err.statusCode > 400) this.notificationService.error('Error loading locations');
             },
             complete: () => { this.isLoading.set(false); }
         });
@@ -111,7 +111,7 @@ export class LocationsComponent implements OnInit {
                     error: (error: HttpErrorResponse) => {
                         const err = error.error as ErrorResponse;
                         this.isLoading.set(false);
-                        if (err.statusCode === 400) this.notificationService.show('Cannot perform this action');
+                        if (err.statusCode === 400) this.notificationService.error('Cannot perform this action');
                     },
                     complete: () => { this.isLoading.set(false); }
                 });
@@ -147,7 +147,7 @@ export class LocationsComponent implements OnInit {
                     error: (error: HttpErrorResponse) => {
                         const err = error.error as ErrorResponse;
                         this.isLoading.set(false);
-                        if (err.statusCode === 400) this.notificationService.show('Cannot delete a location with active compliance items');
+                        if (err.statusCode === 400) this.notificationService.error('Cannot delete a location with active compliance items');
                     },
                     complete: () => { this.isLoading.set(false); }
                 });

@@ -95,10 +95,10 @@ export class AddEditUsersComponents implements OnInit {
 
           this.isLoading.set(false);
 
-          if (err.statusCode === 429) this.notificationService.show("Too many attemps wait 5 minutes and try again")
+          if (err.statusCode === 429) this.notificationService.warn("Too many attemps wait 5 minutes and try again")
 
           if (err.statusCode === 400) {
-            this.notificationService.show('Some fields are invalid');
+            this.notificationService.error('Some fields are invalid');
           }
 
         },
@@ -117,10 +117,10 @@ export class AddEditUsersComponents implements OnInit {
 
           this.isLoading.set(false);
 
-          if (err.statusCode === 429) this.notificationService.show("Too many attemps wait 5 minutes and try again")
+          if (err.statusCode === 429) this.notificationService.warn("Too many attemps wait 5 minutes and try again")
 
           if (err.statusCode === 400) {
-            this.notificationService.show('Some fields are invalid');
+            this.notificationService.error('Some fields are invalid');
           }
 
         },

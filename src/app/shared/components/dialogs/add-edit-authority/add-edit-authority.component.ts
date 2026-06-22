@@ -85,8 +85,8 @@ export class AddEditAuthorityComponent implements OnInit {
             error: (error: HttpErrorResponse) => {
                 const err = error.error as ErrorResponse;
                 this.isLoading.set(false);
-                if (err.statusCode === 429) this.notificationService.show('Too many attempts, wait 5 minutes and try again');
-                if (err.statusCode === 400) this.notificationService.show('Some fields are invalid');
+                if (err.statusCode === 429) this.notificationService.warn('Too many attempts, wait 5 minutes and try again');
+                if (err.statusCode === 400) this.notificationService.error('Some fields are invalid');
             },
             complete: () => { this.isLoading.set(false); }
         });

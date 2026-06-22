@@ -113,7 +113,7 @@ export class DashboardLayoutComponent {
       },
       error: () => {
         this.isBillingLoading.set(false);
-        this.notificationService.show('Error cancelling subscription, try again');
+        this.notificationService.error('Error cancelling subscription, try again');
       }
     });
   }
@@ -129,7 +129,7 @@ export class DashboardLayoutComponent {
       },
       error: () => {
         this.isBillingLoading.set(false);
-        this.notificationService.show('Error resuming subscription, try again');
+        this.notificationService.error('Error resuming subscription, try again');
       }
     });
   }
