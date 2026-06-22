@@ -47,6 +47,7 @@ export class CompliancesComponent implements OnInit {
     public readonly payload = this.authService.getPayload();
     public readonly isTrial = signal<boolean>(this.payload?.tenantStatus === 'TRIAL');
     public readonly isOwner = signal<boolean>(this.payload?.role === 'OWNER');
+    public readonly isEmployee = signal<boolean>(this.payload?.role === 'EMPLOYE');
 
     ngOnInit(): void {
         this.loadLocations();

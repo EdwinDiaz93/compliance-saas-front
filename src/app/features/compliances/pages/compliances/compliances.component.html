@@ -16,7 +16,7 @@
     }
 
     <!-- ACTIVE: no locations -->
-    @else if (locations().length === 0) {
+    @else if (locations().length === 0 && !isEmployee()) {
     <div class="flex items-center justify-center h-64">
         <div class="border border-dashed border-slate-300 rounded-2xl p-10 flex flex-col items-center gap-4 text-center max-w-sm">
             <svg class="w-10 h-10 text-slate-400" viewBox="0 0 24 24" fill="none">
