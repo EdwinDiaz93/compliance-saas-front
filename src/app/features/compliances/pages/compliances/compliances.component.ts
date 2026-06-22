@@ -102,6 +102,10 @@ export class CompliancesComponent implements OnInit {
     }
 
     addCompliance() {
+        if (this.locations.length===0) {
+            this.notificationService.show('No locations found, contact the owner to add compliances. ');
+            return;
+        }
         this.dialog.open(AddEditComplianceComponent, {
             width: '70%',
             height: 'auto',
