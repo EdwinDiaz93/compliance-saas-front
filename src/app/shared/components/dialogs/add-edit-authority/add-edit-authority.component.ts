@@ -36,7 +36,7 @@ export class AddEditAuthorityComponent implements OnInit {
     public readonly authorityForm = this.formBuilder.group({
         name: ['', [Validators.required]],
         level: ['LOCAL', [Validators.required]],
-        stateCode: [''],
+        stateCode: ['TX'],
         renewalUrl: ['', [Validators.required, Validators.pattern(/https?:\/\/.+/)]],
     });
 

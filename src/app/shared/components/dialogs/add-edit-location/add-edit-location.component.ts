@@ -44,7 +44,7 @@ export class AddEditLocationComponent implements OnInit {
     public readonly locationForm = this.formBuilder.group({
         name: ['', [Validators.required, Validators.minLength(5)]],
         businessType: ['RESTAURANT', [Validators.required]],
-        state: ['', [Validators.required]],
+        state: ['TX', [Validators.required]],
         city: ['', [Validators.required, Validators.minLength(3)]],
     });
 

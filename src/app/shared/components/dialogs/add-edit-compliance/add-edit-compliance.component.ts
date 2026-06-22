@@ -46,6 +46,7 @@ export class AddEditComplianceComponent implements OnInit {
     private readonly compliance: ComplianceItem | null = this.data?.compliance ?? null;
     public readonly locationId: string = this.data?.locationId ?? '';
     public readonly locationName: string = this.data?.locationName ?? '';
+    public readonly locationState: string = this.data?.locationState ?? '';
     public readonly payload = this.authService.getPayload();
     public readonly isOwnerOrAdmin = this.payload?.role === 'OWNER' || this.payload?.role === 'ADMIN';
 
@@ -91,7 +92,8 @@ export class AddEditComplianceComponent implements OnInit {
     }
 
     loadAuthorities() {
-        this.authorityService.getAuthorities({ offset: 0, limit: 100 }).subscribe({
+        const filters = this.locationState ? { stateCode: this.locationState } : undefined;
+        this.authorityService.getAuthorities({ offset: 0, limit: 100, filters }).subscribe({
             next: (res) => this.authorities.set(res.data)
         });
     }

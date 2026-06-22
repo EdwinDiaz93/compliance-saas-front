@@ -27,6 +27,7 @@ export class CompliancesComponent implements OnInit {
     public locations = signal<Location[]>([]);
     public selectedLocationId = signal<string>('');
     public selectedLocationName = () => this.locations().find(l => l.id === this.selectedLocationId())?.name ?? '';
+    public selectedLocationState = () => this.locations().find(l => l.id === this.selectedLocationId())?.state ?? '';
 
     public paginationControls: PaginationControls = {
         currentPage: 1,
@@ -111,7 +112,7 @@ export class CompliancesComponent implements OnInit {
             width: '70%',
             height: 'auto',
             disableClose: true,
-            data: { locationId: this.selectedLocationId(), locationName: this.selectedLocationName() }
+            data: { locationId: this.selectedLocationId(), locationName: this.selectedLocationName(), locationState: this.selectedLocationState() }
         }).afterClosed().subscribe((result: DialogResult) => {
             if (result?.action === 'Save') {
                 this.notificationService.show('Compliance created successfully');
@@ -128,7 +129,7 @@ export class CompliancesComponent implements OnInit {
                     width: '70%',
                     height: 'auto',
                     disableClose: true,
-                    data: { compliance, locationId: this.selectedLocationId(), locationName: this.selectedLocationName() }
+                    data: { compliance, locationId: this.selectedLocationId(), locationName: this.selectedLocationName(), locationState: this.selectedLocationState() }
                 }).afterClosed().subscribe((result: DialogResult) => {
                     if (result?.action === 'Save') {
                         this.notificationService.show('Compliance updated successfully');

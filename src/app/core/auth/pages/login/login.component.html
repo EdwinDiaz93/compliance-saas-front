@@ -51,6 +51,12 @@
         }
       </div>
 
+      <div class="flex items-center gap-2.5 -mt-2">
+        <input type="checkbox" id="rememberMe" formControlName="rememberMe"
+          class="w-4 h-4 rounded border-slate-300 text-indigo-600 cursor-pointer accent-indigo-600">
+        <label for="rememberMe" class="text-sm text-slate-500 cursor-pointer select-none">Remember my credentials</label>
+      </div>
+
       <p class="text-xs text-slate-400 -mt-2">We'll send you a magic link — no password needed.</p>
 
       @if (hasError()) {
