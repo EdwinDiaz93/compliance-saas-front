@@ -1,6 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@core/auth/services';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'app-verify',
@@ -19,10 +20,18 @@ export class VerifyComponent implements OnInit {
       const token = params.get('token');
       if (!token) { this.status.set('error'); return; }
 
-      this.authService.verifyAccount(token).subscribe({
-        next: () => this.router.navigateByUrl('/dashboard'),
-        error: () => this.status.set('error'),
-      });
+      this.authService.verifyAccount(token)
+        .pipe(tap(() => this.authService.getPayload()))
+        .subscribe({
+          next: (response) => {
+            if (response.role === 'EMPLOYE') {
+              this.router.navigateByUrl('/compliances')
+            } else {
+              this.router.navigateByUrl('/dashboard')
+            }
+          },
+          error: () => this.status.set('error'),
+        });
     });
 
   }
