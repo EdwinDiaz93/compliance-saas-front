@@ -55,7 +55,11 @@ export class LocationsComponent implements OnInit {
             disableClose: true,
         }).afterClosed().subscribe((result: DialogResult) => {
             if (result?.action === 'Save') {
-                this.notificationService.show('Location created successfully');
+                const created: number = result.payload?.compliancesCreated ?? 0;
+                const msg = created > 0
+                    ? `Location created — ${created} compliance item${created === 1 ? '' : 's'} auto-added`
+                    : 'Location created successfully';
+                this.notificationService.show(msg);
                 this.getLocations(this.tabIndex() === 0);
             }
         });

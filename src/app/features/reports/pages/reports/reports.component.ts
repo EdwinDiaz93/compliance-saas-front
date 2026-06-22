@@ -14,7 +14,6 @@ import { SharedModule } from '@shared/shared-module';
 })
 export class ReportsComponent implements OnInit {
     public audits = signal<AuditRecord[]>([]);
-    public isDownloading = signal<boolean>(false);
 
     public paginationControls: PaginationControls = {
         currentPage: 1,
@@ -46,25 +45,6 @@ export class ReportsComponent implements OnInit {
     changePage(page: number) {
         this.paginationControls.currentPage = page;
         this.loadAudits();
-    }
-
-    downloadCSV() {
-        this.isDownloading.set(true);
-        this.reportsService.downloadCSV().subscribe({
-            next: (blob) => {
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `compliances-${new Date().toISOString().split('T')[0]}.csv`;
-                a.click();
-                URL.revokeObjectURL(url);
-                this.isDownloading.set(false);
-            },
-            error: () => {
-                this.isDownloading.set(false);
-                this.notificationService.show('Error generating CSV');
-            }
-        });
     }
 
     actionClass(action: string): string {

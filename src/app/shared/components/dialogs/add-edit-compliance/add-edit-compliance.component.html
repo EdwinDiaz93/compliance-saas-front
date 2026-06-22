@@ -41,6 +41,16 @@
         </div>
 
         <div class="flex flex-col gap-1.5">
+            <label class="text-sm font-semibold text-slate-700 ml-2">License Number <span class="text-slate-400 font-normal">(optional)</span></label>
+            <div class="flex items-center gap-3 border border-slate-300 rounded-xl px-4 py-3 focus-within:border-indigo-400 focus-within:ring-2 focus-within:ring-indigo-100 transition-all">
+                <svg class="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24" fill="none">
+                    <path d="M7 20h10M7 4h10M9 4v16M15 4v16" stroke="#90a19b" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <input type="text" class="base-input" formControlName="licenseNumber" placeholder="e.g. TX-2024-123456">
+            </div>
+        </div>
+
+        <div class="flex flex-col gap-1.5">
             <label class="text-sm font-semibold text-slate-700 ml-2">Issued At <span class="text-slate-400 font-normal">(optional)</span></label>
             <div class="flex items-center gap-3 border border-slate-300 rounded-xl px-4 py-3 focus-within:border-indigo-400 focus-within:ring-2 focus-within:ring-indigo-100 transition-all">
                 <svg class="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24" fill="none">

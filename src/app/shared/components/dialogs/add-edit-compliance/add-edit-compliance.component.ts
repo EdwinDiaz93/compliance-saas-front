@@ -55,6 +55,7 @@ export class AddEditComplianceComponent implements OnInit {
     public readonly complianceForm = this.formBuilder.group({
         name: ['', [Validators.required]],
         category: ['STATE_LICENSE', [Validators.required]],
+        licenseNumber: [''],
         issuedAt: [''],
         expiresAt: [''],
         issuingAuthorityId: [''],
@@ -82,6 +83,7 @@ export class AddEditComplianceComponent implements OnInit {
             this.complianceForm.patchValue({
                 name: this.compliance.name,
                 category: this.compliance.category,
+                licenseNumber: this.compliance.licenseNumber ?? '',
                 expiresAt: this.compliance.expiresAt ? this.compliance.expiresAt.substring(0, 10) : '',
                 issuedAt: this.compliance.issuedAt ? this.compliance.issuedAt.substring(0, 10) : '',
                 issuingAuthorityId: this.compliance.issuingAuthorityId ?? '',
@@ -115,6 +117,7 @@ export class AddEditComplianceComponent implements OnInit {
         const item: ComplianceItemRequest = {
             name: v.name!,
             category: v.category! as LicenseType,
+            ...(v.licenseNumber && { licenseNumber: v.licenseNumber }),
             ...(v.expiresAt && { expiresAt: v.expiresAt }),
             ...(v.issuedAt && { issuedAt: v.issuedAt }),
             ...(v.issuingAuthorityId && { issuingAuthorityId: v.issuingAuthorityId }),

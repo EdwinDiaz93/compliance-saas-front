@@ -15,7 +15,7 @@ export class LocationService {
     }
 
     saveLocation(request: LocationRequest) {
-        return this.httpClient.post(`${this.baseUrl}/locations`, request);
+        return this.httpClient.post<{ compliancesCreated: number }>(`${this.baseUrl}/locations`, request);
     }
 
     updateLocation(id: string, request: LocationRequest) {

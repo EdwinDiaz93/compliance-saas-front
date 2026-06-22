@@ -4,7 +4,7 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { HttpErrorResponse } from '@angular/common/http';
-import { AddEditComplianceComponent } from '@shared/components/dialogs';
+import { AddEditComplianceComponent, DocumentViewerComponent } from '@shared/components/dialogs';
 import {
     ComplianceItem, CompliancesFilters, ComplianceStatus,
     DialogResult, ErrorResponse, Location, PaginationControls
@@ -37,6 +37,7 @@ export class CompliancesComponent implements OnInit {
 
     private isLoading = signal<boolean>(false);
     public isUploading = signal<boolean>(false);
+    public isDownloading = signal<boolean>(false);
 
     private readonly complianceService = inject(ComplianceService);
     private readonly locationService = inject(LocationService);
@@ -239,10 +240,33 @@ export class CompliancesComponent implements OnInit {
         });
     }
 
-    downloadDocument(id: string) {
-        this.complianceService.getDownloadUrl(id).subscribe({
-            next: (url) => { window.open(url, '_blank'); },
-            error: () => { this.notificationService.show('Error getting download URL'); }
+    viewDocument(id: string) {
+        const compliance = this.compliances().find(c => c.id === id);
+        if (!compliance) return;
+        this.dialog.open(DocumentViewerComponent, {
+            width: '80%',
+            maxWidth: '960px',
+            height: 'auto',
+            data: { compliance },
+        });
+    }
+
+    exportCSV() {
+        this.isDownloading.set(true);
+        this.complianceService.exportCSV().subscribe({
+            next: (blob) => {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `compliances-${new Date().toISOString().split('T')[0]}.csv`;
+                a.click();
+                URL.revokeObjectURL(url);
+                this.isDownloading.set(false);
+            },
+            error: () => {
+                this.isDownloading.set(false);
+                this.notificationService.show('Error generating CSV');
+            }
         });
     }
 
@@ -252,6 +276,7 @@ export class CompliancesComponent implements OnInit {
 
     statusClass(status: ComplianceStatus): string {
         const map: Record<ComplianceStatus, string> = {
+            MISSING: 'bg-zinc-100 text-zinc-600',
             ACTIVE: 'bg-teal-100 text-teal-800',
             EXPIRES_SOON: 'bg-amber-100 text-amber-800',
             EXPIRED: 'bg-red-100 text-red-800',

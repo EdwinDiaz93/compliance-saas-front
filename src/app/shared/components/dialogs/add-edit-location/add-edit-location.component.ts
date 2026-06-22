@@ -79,9 +79,9 @@ export class AddEditLocationComponent implements OnInit {
             : this.locationService.saveLocation(request);
 
         operation.subscribe({
-            next: () => {
+            next: (res: any) => {
                 this.isLoading.set(false);
-                this.dialogRef.close({ action: 'Save', payload: null });
+                this.dialogRef.close({ action: 'Save', payload: { compliancesCreated: res?.compliancesCreated ?? 0 } });
             },
             error: (error: HttpErrorResponse) => {
                 const err = error.error as ErrorResponse;

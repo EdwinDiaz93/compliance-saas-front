@@ -1,0 +1,74 @@
+<app-generic-dialog [title]="compliance.name" (onCancelClick)="close()">
+
+    <div class="flex flex-col p-5 gap-5" style="min-height: 60vh;">
+
+        <!-- Metadata row -->
+        <div class="flex items-center justify-between">
+            <span class="text-xs text-slate-400">{{ compliance.category.replace(/_/g, ' ') }}</span>
+            @if (!isLoading() && !hasError()) {
+            <button (click)="download()"
+                class="flex linear-ic items-center gap-1.5 text-xs text-white  border border-slate-200 rounded-lg px-3 py-1.5 transition-colors">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none">
+                    <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor"
+                        stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                Download
+            </button>
+            }
+        </div>
+
+        <!-- Content -->
+        <div class="flex-1 flex items-start justify-center bg-slate-50 rounded-xl overflow-auto"
+            style="min-height: 50vh;">
+
+            @if (isLoading()) {
+            <div class="flex flex-col items-center gap-3 text-slate-400">
+                <svg class="w-8 h-8 animate-spin" viewBox="0 0 24 24" fill="none">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8h4z" />
+                </svg>
+                <span class="text-sm">Loading document...</span>
+            </div>
+            }
+
+            @else if (hasError()) {
+            <div class="flex flex-col items-center gap-3 text-center px-8">
+                <svg class="w-10 h-10 text-red-400" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5" />
+                    <path d="M12 8v4M12 16h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                </svg>
+                <p class="text-sm font-medium text-slate-600">Could not load document</p>
+                <p class="text-xs text-slate-400">The document may have expired or been removed.</p>
+            </div>
+            }
+
+            @else if (fileKind() === 'image') {
+            <img [src]="presignedUrl()" class="max-w-full max-h-full object-contain rounded-lg shadow-sm"
+                alt="Document" />
+            }
+
+            @else {
+                @if (presignedUrl().length > 0) {
+                <iframe [src]="sanitizePdf(presignedUrl())"
+                    class="w-full border-0 rounded-lg"
+                    style="height: 65vh;"
+                    alt="Document"></iframe>
+                } @else {
+                <div class="flex flex-col items-center gap-4 text-center px-8">
+                    <svg class="w-12 h-12 text-slate-300" viewBox="0 0 24 24" fill="none">
+                        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" stroke="currentColor"
+                            stroke-width="1.5" />
+                        <path d="M14 2v6h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                    </svg>
+                    <p class="text-sm font-medium text-slate-600">Preview not available</p>
+                    <p class="text-xs text-slate-400">This file type cannot be previewed in the browser.</p>
+                    <button (click)="download()" class="base-button linear-ic px-6">Download File</button>
+                </div>
+                }
+            }
+
+        </div>
+
+    </div>
+
+</app-generic-dialog>

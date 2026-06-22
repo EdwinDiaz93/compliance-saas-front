@@ -1,7 +1,7 @@
 import { CommonResponse } from "./common.interface";
 
 export type LicenseType = 'FEDERAL_LICENSE' | 'STATE_LICENSE' | 'LOCAL_LICENSE' | 'HEALTH_PERMIT' | 'ALCOHOL_PERMIT' | 'EMPLOYEE_CERT' | 'INSPECTION';
-export type ComplianceStatus = 'ACTIVE' | 'EXPIRES_SOON' | 'EXPIRED' | 'ARCHIVED';
+export type ComplianceStatus = 'MISSING' | 'ACTIVE' | 'EXPIRES_SOON' | 'EXPIRED' | 'ARCHIVED';
 
 export interface ComplianceItemRequest {
     name: string;
@@ -10,6 +10,7 @@ export interface ComplianceItemRequest {
     issuedAt?: string;
     userId?: string;
     issuingAuthorityId?: string;
+    licenseNumber?: string;
     notes?: string;
 }
 
@@ -24,6 +25,7 @@ export interface UpdateComplianceRequest {
     expiresAt?: string;
     issuedAt?: string;
     issuingAuthorityId?: string;
+    licenseNumber?: string;
     notes?: string;
 }
 
@@ -45,9 +47,11 @@ export interface ComplianceItem {
     userId: string | null;
     locationId: string;
     issuingAuthorityId: string | null;
+    templateId: string | null;
     name: string;
     category: LicenseType;
     status: ComplianceStatus;
+    licenseNumber: string | null;
     expiresAt: string | null;
     issuedAt: string | null;
     documentUrl: string | null;

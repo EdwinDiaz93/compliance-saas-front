@@ -56,6 +56,10 @@ export class ComplianceService {
     }
 
     getDownloadUrl(id: string) {
-        return this.http.get<string>(`${this.baseUrl}/compliances/${id}/document`);
+        return this.http.get<Record<string, string>>(`${this.baseUrl}/compliances/${id}/document`);
+    }
+
+    exportCSV() {
+        return this.http.get(`${this.baseUrl}/reporting/generate-compliances-csv`, { responseType: 'blob' });
     }
 }
