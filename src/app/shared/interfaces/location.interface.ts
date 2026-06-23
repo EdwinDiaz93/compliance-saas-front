@@ -1,6 +1,6 @@
 import { CommonResponse } from "./common.interface";
 
-export type BusinessType = 'RESTAURANT' | 'LIQUOR_STORE' | 'RESTAURANT_WITH_BAR';
+export type BusinessType = 'RESTAURANT' | 'LIQUOR_STORE' | 'RESTAURANT_WITH_BAR' | 'RESTAURANT_WITH_BEER_AND_WINE';
 
 export interface LocationRequest {
     name: string;

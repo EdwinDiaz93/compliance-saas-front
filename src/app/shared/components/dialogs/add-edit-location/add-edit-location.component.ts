@@ -9,14 +9,9 @@ import { NotificationService } from '@shared/services/notification.service';
 import { LocationService } from '@features/locations/services/location.service';
 import { BusinessType, ErrorResponse, Location, LocationRequest } from '@shared/interfaces';
 
-export const US_STATES = [
-    'AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA','HI','ID','IL','IN','IA',
-    'KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ',
-    'NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT',
-    'VA','WA','WV','WI','WY'
-];
+export const US_STATES = ['TX'];
 
-export const BUSINESS_TYPES: BusinessType[] = ['RESTAURANT', 'LIQUOR_STORE', 'RESTAURANT_WITH_BAR'];
+export const BUSINESS_TYPES: BusinessType[] = ['RESTAURANT', 'LIQUOR_STORE', 'RESTAURANT_WITH_BAR', 'RESTAURANT_WITH_BEER_AND_WINE'];
 
 @Component({
     selector: 'app-add-edit-location',
