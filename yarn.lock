@@ -1261,6 +1261,11 @@
   resolved "https://registry.npmjs.org/@oxc-project/types/-/types-0.113.0.tgz"
   integrity sha512-Tp3XmgxwNQ9pEN9vxgJBAqdRamHibi76iowQ38O2I4PMpcvNRQNVsU2n1x1nv9yh0XoTrGFzf7cZSGxmixxrhA==
 
+"@paddle/paddle-js@^1.6.4":
+  version "1.6.4"
+  resolved "https://registry.yarnpkg.com/@paddle/paddle-js/-/paddle-js-1.6.4.tgz#18ffeb35a7ac241a424808ad9b7c029f75c322d8"
+  integrity sha512-ncfnS6I8mCX6krZ3Sgz2iAYivGmhdI81yt9mT6prtPj4Ipd9J3M12LCJRUFL4FB7BYeeuV04c33RSEnbZUBCaA==
+
 "@parcel/watcher-android-arm64@2.5.6":
   version "2.5.6"
   resolved "https://registry.yarnpkg.com/@parcel/watcher-android-arm64/-/watcher-android-arm64-2.5.6.tgz#5f32e0dba356f4ac9a11068d2a5c134ca3ba6564"

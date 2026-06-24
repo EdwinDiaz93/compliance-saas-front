@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { authGuard, notFoundRedirectGuard, tenantActiveGuard } from '@core/guards';
+import { authGuard, notFoundRedirectGuard, roleGuard, tenantActiveGuard } from '@core/guards';
 
 export const routes: Routes = [
 
@@ -50,7 +50,7 @@ export const routes: Routes = [
             },
             {
                 path: 'users',
-                canActivate: [tenantActiveGuard],
+                canActivate: [tenantActiveGuard, roleGuard(['OWNER', 'ADMIN'])],
                 loadChildren: () => import('@features/users/users.routes').then(m => m.usersRoutes)
             },
             {

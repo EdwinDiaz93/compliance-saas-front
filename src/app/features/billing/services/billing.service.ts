@@ -2,12 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from 'environments';
 
+
 export type BillingPlan = 'STARTER' | 'PRO' | 'ADVANCE';
 
 @Injectable({ providedIn: 'root' })
 export class BillingService {
     private readonly baseUrl = environment.baseUrl;
     private readonly http = inject(HttpClient);
+    
 
     createCheckoutSession(plan: BillingPlan) {
         return this.http.post<{ transactionId: string }>(`${this.baseUrl}/billing/checkout-session`, { plan });

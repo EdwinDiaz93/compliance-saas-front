@@ -6,8 +6,11 @@ import { AuthService } from '@core/auth/services';
 import { NotificationService } from '@shared/services/notification.service';
 import { SharedModule } from '@shared/shared-module';
 import { environment } from 'environments';
+import Paddle from '@paddle/paddle-js'
+import { lastValueFrom } from 'rxjs';
+import { PaddleService } from '@features/billing/services/paddle.service';
 
-declare var Paddle: any;
+
 
 interface Plan {
     id: BillingPlan;
@@ -28,6 +31,7 @@ interface Plan {
 export class CheckoutComponent implements OnInit {
     private readonly billingService = inject(BillingService);
     private readonly notificationService = inject(NotificationService);
+    private readonly paddleService = inject(PaddleService);
     private readonly authService = inject(AuthService);
     private readonly router = inject(Router);
 
@@ -97,31 +101,28 @@ export class CheckoutComponent implements OnInit {
             this.router.navigateByUrl('/dashboard');
             return;
         }
-
-        Paddle.Initialize({
-            token: environment.paddleToken,
-            eventCallback: (data: any) => {
-                if (data.name === 'checkout.completed') {
-                    this.router.navigateByUrl('/billing/success');
-                }
-            }
-        });
     }
 
-    subscribe(plan: BillingPlan) {
-        this.loadingPlan.set(plan);
-        this.billingService.createCheckoutSession(plan).subscribe({
-            next: (res) => {
-                this.loadingPlan.set(null);
-                Paddle.Checkout.open({ transactionId: res.transactionId });
-            },
-            error: (error: HttpErrorResponse) => {
-                this.loadingPlan.set(null);
-                if (error.error?.statusCode === 429)
-                    this.notificationService.warn('Too many attempts, wait a moment and try again');
-                else
-                    this.notificationService.error('Error creating checkout session, try again');
-            }
-        });
+    async subscribe(plan: BillingPlan) {
+        try {
+            const paddle = await this.paddleService.getInstance();
+            const user = this.authService.getPayload();
+            this.loadingPlan.set(plan);
+            const res = await lastValueFrom(this.billingService.createCheckoutSession(plan));
+            this.loadingPlan.set(null);
+            paddle?.Checkout.open({
+                transactionId: res.transactionId, customer: { email: user?.email }
+            });
+        } catch (error: any) {
+            this.loadingPlan.set(null);
+            if (error.error?.statusCode === 429)
+                this.notificationService.warn('Too many attempts, wait a moment and try again');
+            else
+                this.notificationService.error('Error creating checkout session, try again');
+        } finally {
+            this.loadingPlan.set(null);
+        }
+
+
     }
 }

@@ -21,6 +21,9 @@ export const tenantActiveGuard: CanActivateFn = () => {
   
   if (!payload.tenantStatus || payload.tenantStatus === 'ACTIVE') return true;
 
+  // SUSPENDED: debe reactivar su suscripción
+  if (payload.tenantStatus === 'SUSPENDED') return router.createUrlTree(['/billing/checkout']);
+
   // TRIAL: redirige al dashboard donde el sidebar muestra las opciones bloqueadas
   return router.createUrlTree(['/dashboard']);
 };
