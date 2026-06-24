@@ -9,15 +9,8 @@ export class BillingService {
     private readonly baseUrl = environment.baseUrl;
     private readonly http = inject(HttpClient);
 
-    /**
-     * Crea una checkout session en Stripe y devuelve la URL a la que redirigir al usuario.
-     * El backend genera la session con trial_period_days: 15 — los primeros 15 dias son gratis.
-     * El usuario es redirigido a Stripe para ingresar su tarjeta; el cobro ocurre al dia 15.
-     */
     createCheckoutSession(plan: BillingPlan) {
-        // responseType: 'text' porque el backend devuelve el URL de Stripe como string plano,
-        // no como JSON — sin esto Angular intenta parsear el URL como JSON y lanza error de parseo
-        return this.http.post(`${this.baseUrl}/billing/checkout-session`, { plan }, { responseType: 'text' });
+        return this.http.post<{ url: string }>(`${this.baseUrl}/billing/checkout-session`, { plan });
     }
 
     /**

@@ -103,8 +103,13 @@ export class CheckoutComponent implements OnInit {
     subscribe(plan: BillingPlan) {
         this.loadingPlan.set(plan);
         this.billingService.createCheckoutSession(plan).subscribe({
-            next: (url) => {
-                window.open(url, '_self');
+            next: (res) => {
+                if (!res?.url?.startsWith('http')) {
+                    this.loadingPlan.set(null);
+                    this.notificationService.error('Could not generate checkout URL, try again');
+                    return;
+                }
+                window.open(res.url, '_self');
             },
             error: (error: HttpErrorResponse) => {
                 this.loadingPlan.set(null);
