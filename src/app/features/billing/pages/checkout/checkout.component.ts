@@ -5,6 +5,9 @@ import { BillingService, BillingPlan } from '@features/billing/services/billing.
 import { AuthService } from '@core/auth/services';
 import { NotificationService } from '@shared/services/notification.service';
 import { SharedModule } from '@shared/shared-module';
+import { environment } from 'environments';
+
+declare var Paddle: any;
 
 interface Plan {
     id: BillingPlan;
@@ -30,11 +33,6 @@ export class CheckoutComponent implements OnInit {
 
     public loadingPlan = signal<BillingPlan | null>(null);
 
-    /**
-     * Definicion de los tres planes disponibles.
-     * Los limites deben coincidir con los valores configurados en el backend (.env STARTER_MAX_*, PRO_MAX_*).
-     * ADVANCE es ilimitado — el backend guarda null en maxEmployees/maxLocations.
-     */
     public readonly plans: Plan[] = [
         {
             id: 'STARTER',
@@ -97,19 +95,25 @@ export class CheckoutComponent implements OnInit {
         if (status === 'ACTIVE') {
             this.notificationService.warn('You already have an active subscription');
             this.router.navigateByUrl('/dashboard');
+            return;
         }
+
+        Paddle.Initialize({
+            token: environment.paddleToken,
+            eventCallback: (data: any) => {
+                if (data.name === 'checkout.completed') {
+                    this.router.navigateByUrl('/billing/success');
+                }
+            }
+        });
     }
 
     subscribe(plan: BillingPlan) {
         this.loadingPlan.set(plan);
         this.billingService.createCheckoutSession(plan).subscribe({
             next: (res) => {
-                if (!res?.url?.startsWith('http')) {
-                    this.loadingPlan.set(null);
-                    this.notificationService.error('Could not generate checkout URL, try again');
-                    return;
-                }
-                window.open(res.url, '_self');
+                this.loadingPlan.set(null);
+                Paddle.Checkout.open({ transactionId: res.transactionId });
             },
             error: (error: HttpErrorResponse) => {
                 this.loadingPlan.set(null);

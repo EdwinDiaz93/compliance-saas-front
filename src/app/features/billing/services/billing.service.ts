@@ -10,7 +10,7 @@ export class BillingService {
     private readonly http = inject(HttpClient);
 
     createCheckoutSession(plan: BillingPlan) {
-        return this.http.post<{ url: string }>(`${this.baseUrl}/billing/checkout-session`, { plan });
+        return this.http.post<{ transactionId: string }>(`${this.baseUrl}/billing/checkout-session`, { plan });
     }
 
     /**
