@@ -1,0 +1,72 @@
+<div class="max-w-3xl mx-auto px-6 py-16">
+
+    <div class="mb-10">
+        <h1 class="text-3xl font-bold text-slate-800 mb-2">Privacy Policy</h1>
+        <p class="text-sm text-slate-400">Effective date: {{ effectiveDate }}</p>
+    </div>
+
+    <div class="flex flex-col gap-8 text-slate-600 text-sm leading-relaxed">
+
+        <section class="flex flex-col gap-3">
+            <h2 class="text-base font-semibold text-slate-800">1. Information We Collect</h2>
+            <p>We collect information you provide directly, including: name, email address, organization name, and payment information (processed by Paddle — we do not store card details). We also collect information about how you use the Service, including compliance items, uploaded documents, and audit log entries.</p>
+        </section>
+
+        <section class="flex flex-col gap-3">
+            <h2 class="text-base font-semibold text-slate-800">2. How We Use Your Information</h2>
+            <p>We use your information to: provide and operate the Service, send transactional emails (magic links, invitations, compliance expiration reminders, billing notifications), and improve the Service. We do not sell your personal information to third parties.</p>
+        </section>
+
+        <section class="flex flex-col gap-3">
+            <h2 class="text-base font-semibold text-slate-800">3. Document Storage</h2>
+            <p>Documents you upload are stored encrypted on Amazon S3 (us-east-2 region) using server-side encryption (SSE-S3). Access is restricted to your organization's users. Pre-signed URLs for document access expire after 15 minutes.</p>
+        </section>
+
+        <section class="flex flex-col gap-3">
+            <h2 class="text-base font-semibold text-slate-800">4. Data Isolation</h2>
+            <p>ComplyyCert is a multi-tenant platform. Each organization's data is logically isolated by a unique tenant identifier. Users from one organization cannot access data from another organization.</p>
+        </section>
+
+        <section class="flex flex-col gap-3">
+            <h2 class="text-base font-semibold text-slate-800">5. Third-Party Services</h2>
+            <p>We use the following third-party services to operate ComplyyCert:</p>
+            <ul class="flex flex-col gap-1.5 ml-4">
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full bg-slate-400 mt-1.5 flex-shrink-0"></span><span><strong class="text-slate-700">Amazon Web Services (AWS)</strong> — database hosting (RDS) and document storage (S3)</span></li>
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full bg-slate-400 mt-1.5 flex-shrink-0"></span><span><strong class="text-slate-700">Amazon SES</strong> — transactional email delivery</span></li>
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full bg-slate-400 mt-1.5 flex-shrink-0"></span><span><strong class="text-slate-700">Paddle</strong> — payment processing and subscription management</span></li>
+            </ul>
+        </section>
+
+        <section class="flex flex-col gap-3">
+            <h2 class="text-base font-semibold text-slate-800">6. Email Communications</h2>
+            <p>We send the following transactional emails: authentication magic links, team invitation emails, compliance expiration reminders (at 90, 60, 30, 15, 7 and 1 days before expiration), and billing notifications. These emails are necessary for the operation of the Service and cannot be opted out of while your account is active.</p>
+        </section>
+
+        <section class="flex flex-col gap-3">
+            <h2 class="text-base font-semibold text-slate-800">7. Data Retention</h2>
+            <p>We retain your data as long as your account is active. Upon account termination, your data may be retained for up to 30 days before deletion. Audit logs may be retained for compliance purposes for up to 1 year.</p>
+        </section>
+
+        <section class="flex flex-col gap-3">
+            <h2 class="text-base font-semibold text-slate-800">8. Security</h2>
+            <p>We implement industry-standard security measures including: HTTPS/TLS encryption in transit, AES-256 encryption at rest (S3 SSE-S3), JWT-based authentication with short-lived tokens, role-based access control, and regular security reviews.</p>
+        </section>
+
+        <section class="flex flex-col gap-3">
+            <h2 class="text-base font-semibold text-slate-800">9. Your Rights</h2>
+            <p>You may request access to, correction of, or deletion of your personal data by contacting us at <a href="mailto:support@complyycert.com" class="text-teal-600 hover:underline">support&#64;complyycert.com</a>. We will respond within 30 days.</p>
+        </section>
+
+        <section class="flex flex-col gap-3">
+            <h2 class="text-base font-semibold text-slate-800">10. Changes to This Policy</h2>
+            <p>We may update this Privacy Policy from time to time. We will notify you of material changes by email. Continued use of the Service after changes constitutes acceptance of the new Policy.</p>
+        </section>
+
+        <section class="flex flex-col gap-3">
+            <h2 class="text-base font-semibold text-slate-800">11. Contact</h2>
+            <p>For privacy-related questions, contact us at <a href="mailto:support@complyycert.com" class="text-teal-600 hover:underline">support&#64;complyycert.com</a>.</p>
+        </section>
+
+    </div>
+
+</div>

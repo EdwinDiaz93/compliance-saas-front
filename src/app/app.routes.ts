@@ -22,6 +22,10 @@ export const routes: Routes = [
     },
     {
         path: '',
+        loadChildren: () => import('@features/public/public.routes').then(m => m.publicRoutes)
+    },
+    {
+        path: '',
         loadComponent: () => import('@layout').then(c => c.DashboardLayoutComponent),
         canActivate: [authGuard],
         children: [
