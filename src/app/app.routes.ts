@@ -5,7 +5,7 @@ export const routes: Routes = [
 
     {
         path: '',
-        redirectTo: 'auth',
+        redirectTo: 'pricing',
         pathMatch: 'full'
     },
     {
@@ -73,6 +73,6 @@ export const routes: Routes = [
 
     {
         path: '**',
-        redirectTo: 'auth'
+        redirectTo: 'pricing'
     }
 ];
