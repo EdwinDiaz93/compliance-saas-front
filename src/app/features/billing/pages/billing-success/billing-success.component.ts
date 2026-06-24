@@ -20,8 +20,8 @@ export class BillingSuccessComponent implements OnInit {
 
     ngOnInit() {
         /**
-         * Stripe redirige aqui despues de completar el pago.
-         * El webhook de Stripe ya activo el tenant (status: ACTIVE) en el backend.
+         * Paddle redirige aqui despues de completar el pago.
+         * El webhook de Paddle ya activo el tenant (status: ACTIVE) en el backend.
          * Se fuerza un refresh del token para que Angular reciba el nuevo tenantStatus: ACTIVE
          * y actualice el user_info en localStorage — sin esto el sidebar seguiria mostrando el candado.
          */

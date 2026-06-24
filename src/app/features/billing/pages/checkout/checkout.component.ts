@@ -100,22 +100,13 @@ export class CheckoutComponent implements OnInit {
         }
     }
 
-    /**
-     * Llama al backend para crear la session de Stripe y redirige al usuario al checkout.
-     * Stripe mostrara la pantalla de pago con el trial de 15 dias configurado en el backend.
-     * Al completar el pago Stripe redirige a SUCCESS_URL (/billing/success).
-     */
     subscribe(plan: BillingPlan) {
         this.loadingPlan.set(plan);
         this.billingService.createCheckoutSession(plan).subscribe({
             next: (url) => {
-                // window.open con _self para forzar la navegacion en la misma pestaña
-                // window.location.href puede ser bloqueado por el browser en contexto async
                 window.open(url, '_self');
             },
             error: (error: HttpErrorResponse) => {
-                console.log(error);
-                
                 this.loadingPlan.set(null);
                 if (error.error?.statusCode === 429)
                     this.notificationService.warn('Too many attempts, wait a moment and try again');
