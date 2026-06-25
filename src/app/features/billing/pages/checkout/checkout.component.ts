@@ -111,7 +111,8 @@ export class CheckoutComponent implements OnInit {
             const res = await lastValueFrom(this.billingService.createCheckoutSession(plan));
             this.loadingPlan.set(null);
             paddle?.Checkout.open({
-                transactionId: res.transactionId, customer: { email: user?.email }
+                transactionId: res.transactionId, customer: { email: user?.email! }
+                
             });
         } catch (error: any) {
             this.loadingPlan.set(null);
