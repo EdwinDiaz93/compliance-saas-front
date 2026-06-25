@@ -93,7 +93,7 @@
                     </span>
                 </td>
                 <td class="px-6 py-4 text-xs">
-                    {{ compliance.expiresAt ? (compliance.expiresAt | date:'MM/dd/yy') : '—' }}
+                    {{ compliance.expiresAt ? (compliance.expiresAt | date:'MM/dd/yy':'UTC') : '—' }}
                 </td>
                 <td class="px-6 py-4 text-xs">{{ compliance.issuingAuthority?.name ?? '—' }}</td>
                 <td class="px-6 py-4">
