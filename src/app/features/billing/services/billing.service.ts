@@ -29,6 +29,10 @@ export class BillingService {
         }>(`${this.baseUrl}/billing/subscription-status`);
     }
 
+    upgradePlan(plan: BillingPlan) {
+        return this.http.patch<{ message: string }>(`${this.baseUrl}/billing/upgrade`, { plan });
+    }
+
     cancelSubscription() {
         return this.http.delete<{ message: string }>(`${this.baseUrl}/billing/cancel-subscription`);
     }

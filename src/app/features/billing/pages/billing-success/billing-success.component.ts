@@ -1,6 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService, UserInfo } from '@core/auth/services';
+import { AuthService } from '@core/auth/services';
+import { BillingService } from '@features/billing/services/billing.service';
 import { SharedModule } from '@shared/shared-module';
 
 const POLL_INTERVAL_MS = 2500;
@@ -13,6 +14,7 @@ const MAX_ATTEMPTS = 6; // ~15 segundos máximo de espera
 })
 export class BillingSuccessComponent implements OnInit {
     private readonly authService = inject(AuthService);
+    private readonly billingService = inject(BillingService);
     private readonly router = inject(Router);
 
     public status = signal<'loading' | 'done' | 'error'>('loading');
@@ -28,18 +30,28 @@ export class BillingSuccessComponent implements OnInit {
     }
 
     private pollForActivation() {
-        this.authService.refreshToken().subscribe({
-            next: (userInfo: UserInfo) => {
-                if (userInfo.tenantStatus === 'ACTIVE') {
-                    this.status.set('done');
-                    setTimeout(() => this.router.navigateByUrl('/dashboard'), 1500);
+        this.billingService.getSubscriptionStatus().subscribe({
+            next: ({ hasSubscription }) => {
+                if (hasSubscription) {
+                    // Suscripción activa — ahora sí refrescamos el token una sola vez
+                    this.authService.refreshToken().subscribe({
+                        next: () => {
+                            this.status.set('done');
+                            setTimeout(() => this.router.navigateByUrl('/dashboard'), 1500);
+                        },
+                        error: () => {
+                            this.status.set('done');
+                            setTimeout(() => this.router.navigateByUrl('/dashboard'), 1000);
+                        }
+                    });
                 } else if (this.attempt < MAX_ATTEMPTS) {
                     this.attempt++;
                     setTimeout(() => this.pollForActivation(), POLL_INTERVAL_MS);
                 } else {
-                    // Webhook tardó demasiado — el usuario entra igual, el interceptor reintentará
-                    this.status.set('done');
-                    setTimeout(() => this.router.navigateByUrl('/dashboard'), 1000);
+                    // Webhook tardó demasiado — el usuario entra igual
+                    this.authService.refreshToken().subscribe({
+                        complete: () => this.router.navigateByUrl('/dashboard')
+                    });
                 }
             },
             error: () => {
