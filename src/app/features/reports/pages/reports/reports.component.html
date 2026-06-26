@@ -36,7 +36,8 @@
                 @for (audit of audits() | paginate:{
                     id: 'audits_pagination',
                     itemsPerPage: paginationControls.perPage,
-                    currentPage: paginationControls.currentPage
+                    currentPage: paginationControls.currentPage,
+                    totalItems: paginationControls.totalPages
                 }; track $index) {
                 <tr class="odd:bg-white/40 even:bg-white/20 border-b border-slate-100/80 last:border-0">
                     <td class="px-6 py-3">

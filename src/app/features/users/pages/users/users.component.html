@@ -45,7 +45,8 @@
                     @for (user of users() | paginate:{
                     id:'users_pagination',
                     itemsPerPage: paginationControls.perPage,
-                    currentPage: paginationControls.currentPage
+                    currentPage: paginationControls.currentPage,
+                    totalItems: paginationControls.totalPages
                     }; track $index) {
                     <tr class="odd:bg-neutral-primary even:bg-neutral-secondary-soft border-b border-default">
                         <td scope="row" class="px-6 py-4 font-medium text-heading whitespace-nowrap">
@@ -183,7 +184,8 @@
                     @for (user of users() | paginate:{
                     id:'deleted_users_pagination',
                     itemsPerPage: paginationControls.perPage,
-                    currentPage: paginationControls.currentPage
+                    currentPage: paginationControls.currentPage,
+                    totalItems: paginationControls.totalPages
                     }; track $index) {
                     <tr class="odd:bg-neutral-primary even:bg-neutral-secondary-soft border-b border-default">
                         @if (tabIndex()===0) {

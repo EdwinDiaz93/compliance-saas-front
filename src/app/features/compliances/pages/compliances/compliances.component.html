@@ -84,7 +84,8 @@
             @for (compliance of compliances() | paginate:{
                 id: 'compliances_pagination',
                 itemsPerPage: paginationControls.perPage,
-                currentPage: paginationControls.currentPage
+                currentPage: paginationControls.currentPage,
+                totalItems: paginationControls.totalPages
             }; track $index) {
             <tr class="odd:bg-neutral-primary even:bg-neutral-secondary-soft border-b border-default">
                 <td class="px-6 py-4 font-medium text-heading whitespace-nowrap">{{ compliance.name }}</td>
