@@ -1,7 +1,7 @@
 <app-generic-dialog firstButtonText="Save" (onFirstClick)="saveUser()" [title]="title" (onCancelClick)="onCancel()">
 
 
-    <form [formGroup]="userForm" class="grid grid-cols-2 p-5 gap-10 mb-10" (ngSubmit)="saveUser()">
+    <form [formGroup]="userForm" class="grid grid-cols-1 sm:grid-cols-2 p-5 gap-6 sm:gap-10 mb-10" (ngSubmit)="saveUser()">
         <div class="flex flex-col gap-1.5">
             <label for="email" class="text-sm font-semibold text-slate-700 ml-2">Email</label>
             <div
@@ -93,7 +93,7 @@
             }
         </div>
         <div class="col-span-full flex flex-row justify-center">
-            <button class="base-button linear-ic w-1/4" type="submit">Save</button>
+            <button class="base-button linear-ic w-full sm:w-1/4" type="submit">Save</button>
         </div>
     </form>
 

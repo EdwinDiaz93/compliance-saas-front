@@ -34,8 +34,8 @@
     @else {
 
     <!-- Location selector + Add button -->
-    <div class="flex flex-row items-center gap-4 mb-5">
-        <div class="flex items-center gap-3 border border-slate-300 rounded-xl px-4 py-2 focus-within:border-indigo-400 transition-all w-64">
+    <div class="flex flex-col sm:flex-row sm:items-center gap-3 mb-5">
+        <div class="flex items-center gap-3 border border-slate-300 rounded-xl px-4 py-2 focus-within:border-indigo-400 transition-all w-full sm:w-64">
             <svg class="w-4 h-4 text-slate-400 flex-shrink-0" viewBox="0 0 24 24" fill="none">
                 <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="#90a19b"/>
             </svg>
@@ -45,22 +45,24 @@
                 }
             </select>
         </div>
-        
-        <button (click)="addCompliance()" class="base-button linear-ic w-40 "><span >Add Compliance</span></button>
-        @if (!isEmployee()) {
-            <button (click)="exportCSV()" [disabled]="isDownloading()"
-                class="base-button linear-ic w-40  flex items-center justify-center gap-2">
-                @if (isDownloading()) {
-                    <span class="text-xs animate-pulse">Generating...</span>
-                } @else {
-                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none">
-                        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"
-                            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                    <span >Export CSV</span>
-                }
-            </button>
-        }
+
+        <div class="flex flex-row gap-3">
+            <button (click)="addCompliance()" class="base-button linear-ic flex-1 sm:flex-none sm:w-40"><span>Add Compliance</span></button>
+            @if (!isEmployee()) {
+                <button (click)="exportCSV()" [disabled]="isDownloading()"
+                    class="base-button linear-ic flex-1 sm:flex-none sm:w-40 flex items-center justify-center gap-2">
+                    @if (isDownloading()) {
+                        <span class="text-xs animate-pulse">Generating...</span>
+                    } @else {
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none">
+                            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"
+                                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span>Export CSV</span>
+                    }
+                </button>
+            }
+        </div>
         @if (isUploading()) {
             <span class="text-xs text-slate-500 animate-pulse">Uploading document...</span>
         }

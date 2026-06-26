@@ -11,7 +11,7 @@
     </div>
     }
 
-    <form [formGroup]="complianceForm" class="grid grid-cols-2 p-5 gap-8 mb-10" (ngSubmit)="saveCompliance()">
+    <form [formGroup]="complianceForm" class="grid grid-cols-1 sm:grid-cols-2 p-5 gap-6 sm:gap-8 mb-10" (ngSubmit)="saveCompliance()">
 
         <div class="flex flex-col gap-1.5">
             <label class="text-sm font-semibold text-slate-700 ml-2">License / Document Name</label>
@@ -118,7 +118,7 @@
         }
 
         <div class="col-span-full flex flex-row justify-center">
-            <button class="base-button linear-ic w-1/4" type="submit">Save</button>
+            <button class="base-button linear-ic w-full sm:w-1/4" type="submit">Save</button>
         </div>
 
     </form>
