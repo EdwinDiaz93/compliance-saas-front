@@ -15,6 +15,12 @@ export class ReportsService {
         });
     }
 
+    downloadAuditCSV() {
+        return this.http.get(`${this.baseUrl}/reporting/generate-audits-csv`, {
+            responseType: 'blob'
+        });
+    }
+
     getAudits(filters: AuditsFilters) {
         return this.http.post<CommonResponse<AuditRecord>>(`${this.baseUrl}/reporting/search-audits`, filters);
     }
