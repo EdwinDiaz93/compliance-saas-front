@@ -73,6 +73,7 @@
         <thead class="bg-neutral-secondary-soft border-b border-default linear-ic text-white">
             <tr>
                 <th class="px-6 py-3 font-medium">Name</th>
+                <th class="px-6 py-3 font-medium">License #</th>
                 <th class="px-6 py-3 font-medium">Category</th>
                 <th class="px-6 py-3 font-medium">Status</th>
                 <th class="px-6 py-3 font-medium">Expires At</th>
@@ -89,6 +90,7 @@
             }; track $index) {
             <tr class="odd:bg-neutral-primary even:bg-neutral-secondary-soft border-b border-default">
                 <td class="px-6 py-4 font-medium text-heading whitespace-nowrap">{{ compliance.name }}</td>
+                <td class="px-6 py-4 text-xs">{{ compliance.licenseNumber || '—' }}</td>
                 <td class="px-6 py-4 text-xs">{{ compliance.category.replace(/_/g, ' ') }}</td>
                 <td class="px-6 py-4">
                     <span [class]="'text-xs font-medium px-2 py-0.5 rounded ' + statusClass(compliance.status)">
@@ -108,8 +110,7 @@
                             <path d="M11 4H6C4.93913 4 3.92178 4.42142 3.17163 5.17157C2.42149 5.92172 2 6.93913 2 8V18C2 19.0609 2.42149 20.0783 3.17163 20.8284C3.92178 21.5786 4.93913 22 6 22H17C19.21 22 20 20.2 20 18V13" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
 
-                        <!-- Upload / Download document -->
-                        @if (!compliance.documentUrl) {
+                        <!-- Upload / Replace document -->
                         <label [for]="'file-input-' + compliance.id" class="cursor-pointer">
                             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none">
                                 <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -118,7 +119,9 @@
                         <input [id]="'file-input-' + compliance.id" type="file" class="hidden"
                             accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
                             (change)="uploadDocument(compliance.id, $event)">
-                        } @else {
+
+                        <!-- View document -->
+                        @if (compliance.documentUrl) {
                         <svg (click)="viewDocument(compliance.id)" class="w-4 h-4 cursor-pointer text-teal-700" viewBox="0 0 24 24" fill="none" title="View document">
                             <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="#0d7377" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                             <circle cx="12" cy="12" r="3" stroke="#0d7377" stroke-width="1.5"/>

@@ -3,7 +3,7 @@
 
     <button (click)="addUser()" class="base-button w-40 linear-ic mb-5">Add User</button>
 
-    @if (checkAll() && tabIndex()===0) {
+    @if (tabIndex()===0 && users().some(u => u.selected)) {
     <button (click)="sendInvitations()" class="base-button w-40 linear-ic ml-5 mb-5">Send Invitations</button>
     }
 
@@ -219,8 +219,8 @@
                             }
                         </td>
                         <td class="px-6 py-4 flex flex-row justify-around">
-                            <svg  (click)="restoreUser(user.id)" fill="#000000" class="w-5 h-5 cursor-pointer" viewBox="0 0 64 64"
-                                version="1.1" xmlns="http://www.w3.org/2000/svg"
+                            <svg (click)="restoreUser(user.id)" fill="#000000" class="w-5 h-5 cursor-pointer"
+                                viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg"
                                 xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve"
                                 xmlns:serif="http://www.serif.com/"
                                 style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">

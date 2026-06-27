@@ -20,3 +20,36 @@
 .base-button{
   @apply  py-3 rounded-xl text-white font-semibold text-sm tracking-wide cursor-pointer hover:opacity-90 transition-opacity mt-1 disabled:opacity-60
 }
+
+/* ngx-pagination global styles */
+.ngx-pagination {
+  @apply flex flex-row items-center gap-1 p-0 m-0 list-none;
+}
+.ngx-pagination li {
+  @apply rounded-lg overflow-hidden;
+}
+.ngx-pagination a,
+.ngx-pagination button {
+  @apply block px-3 py-1.5 text-sm font-medium text-slate-600 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer;
+}
+.ngx-pagination .current {
+  @apply text-white px-3 py-1.5 text-sm font-medium rounded-lg;
+  background-image: linear-gradient(to right, var(--color-zinc-900), var(--color-blue-900)) !important;
+  background-color: transparent !important;
+}
+.ngx-pagination .current span {
+  @apply text-white;
+}
+.ngx-pagination .pagination-previous a,
+.ngx-pagination .pagination-previous span,
+.ngx-pagination .pagination-next a,
+.ngx-pagination .pagination-next span {
+  @apply px-3 py-1.5 text-sm font-medium;
+}
+.ngx-pagination .disabled {
+  @apply opacity-40 cursor-not-allowed;
+}
+.ngx-pagination .disabled a,
+.ngx-pagination .disabled span {
+  @apply cursor-not-allowed;
+}
