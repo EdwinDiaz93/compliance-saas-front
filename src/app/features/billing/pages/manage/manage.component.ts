@@ -45,10 +45,10 @@ export class ManageComponent implements OnInit {
             id: 'PRO',
             name: 'Pro',
             price: 199,
-            maxEmployees: '40 employees',
+            maxEmployees: '80 employees',
             maxLocations: '10 locations',
             highlighted: true,
-            features: ['Up to 40 employees', 'Up to 10 locations', 'License & permit tracking', 'Document storage', 'Email expiry alerts', 'Audit log', 'CSV export', 'Priority support'],
+            features: ['Up to 80 employees', 'Up to 10 locations', 'License & permit tracking', 'Document storage', 'Email expiry alerts', 'Audit log', 'CSV export', 'Monthly reports emailed to owner', 'Priority support'],
         },
         {
             id: 'ADVANCE',
@@ -57,7 +57,7 @@ export class ManageComponent implements OnInit {
             maxEmployees: 'Unlimited employees',
             maxLocations: 'Unlimited locations',
             highlighted: false,
-            features: ['Unlimited employees', 'Unlimited locations', 'License & permit tracking', 'Document storage', 'Email expiry alerts', 'Audit log', 'CSV export', 'Priority support', 'Dedicated onboarding'],
+            features: ['Unlimited employees', 'Unlimited locations', 'License & permit tracking', 'Document storage', 'Email expiry alerts', 'Audit log', 'CSV export', 'Monthly reports emailed to owner', 'Priority support'],
         },
     ];
 
